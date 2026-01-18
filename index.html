@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Lost Artifact - Quest</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --bg: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #game-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hidden { display: none; }
+
+        /* Animasi */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        .shake { animation: shake 0.4s ease-in-out; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        .correct-anim { animation: bounce 0.6s; }
+
+        input {
+            padding: 12px;
+            width: 80%;
+            margin: 15px 0;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 25px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        #leaderboard-list {
+            text-align: left;
+            margin-top: 15px;
+            padding: 0;
+            list-style: none;
+        }
+
+        #leaderboard-list li {
+            padding: 5px 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="start-screen">
+        <h1>🏺 Lost Artifact</h1>
+        <p>Nama Arkeolog:</p>
+        <input type="text" id="player-name" placeholder="Ketik namamu...">
+        <button onclick="startGame()">MULAI</button>
+        <hr>
+        <h3>🏆 Top Skor Lokal</h3>
+        <ul id="leaderboard-list"></ul>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <div class="stats-bar">
+            <span id="name-display"></span>
+            <span id="lives-display">❤️❤️❤️</span>
+            <span id="timer-display" style="color:var(--danger)">30s</span>
+        </div>
+        <h2 id="level-display">Level 1</h2>
+        <p id="question-text" style="font-size: 1.1em; min-height: 60px;"></p>
+        <input type="text" id="answer-input" autocomplete="off">
+        <br>
+        <button onclick="checkAnswer()" id="btn-submit">KIRIM</button>
+        <button onclick="useHint()" style="background:#3498db">HINT (-50)</button>
+        <p id="hint-box" style="color: #7f8c8d; font-size: 0.8em; margin-top: 10px;"></p>
+    </div>
+
+    <div id="end-screen" class="hidden">
+        <h1 id="result-title">Selesai!</h1>
+        <p>Skor Kamu:</p>
+        <h2 id="final-score" style="font-size: 3em; color: var(--accent);">0</h2>
+        <button onclick="location.reload()">MAIN LAGI</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        [{q: "Aku punya banyak kunci tapi tak bisa buka pintu?", a: "piano", h: "Alat musik"},
+         {q: "Selalu di depan tapi tak terlihat?", a: "masa depan", h: "Waktu yang akan datang"},
+         {q: "Memenuhi ruangan tapi tak makan tempat?", a: "cahaya", h: "Lampu"},
+         {q: "Semakin banyak diambil, semakin besar?", a: "lubang", h: "Tanah kosong"},
+         {q: "Pecah tanpa disentuh?", a: "janji", h: "Kaitan dengan ucapan"}],
+        
+        [{q: "3, 6, 12, 24, ...?", a: "48", h: "x2"},
+         {q: "1=5, 2=25, 3=125, maka 5=?", a: "1", h: "Kembali ke awal"},
+         {q: "Angka ganjil jadi genap kalau 'S' dibuang?", a: "seven", h: "Bahasa Inggris"},
+         {q: "Angka 9 muncul berapa kali di 1-100?", a: "20", h: "Cek angka 90-99"},
+         {q: "Jam bunyi 3x dlm 3 detik, berapa x dlm 9 detik?", a: "9", h: "1 detik = 1 kali"}],
+        
+        [{q: "Mana yang aman: Pintu Api atau Singa lapar 3 tahun?", a: "singa", h: "Singanya sudah mati"},
+         {q: "Punya kota tapi tak ada rumah?", a: "peta", h: "Kertas navigasi"},
+         {q: "Lari dan salip orang kedua, posisimu sekarang?", a: "kedua", h: "Bukan pertama"},
+         {q: "Anak ke-5 Ayah Mary: Nana, Nene, Nini, Nono, ...?", a: "mary", h: "Nama ayahnya"},
+         {q: "Air membeku jadi jalan, terjadi di musim?", a: "dingin", h: "Salju"}]
+    ];
+
+    let currentLvl = 0, currentQ = 0, score = 0, lives = 3, timer, timeLeft = 30;
+
+    // Load Leaderboard saat buka
+    window.onload = () => {
+        const scores = JSON.parse(localStorage.getItem('archeologist_scores') || '[]');
+        const list = document.getElementById('leaderboard-list');
+        list.innerHTML = scores.map(s => `<li><span>${s.name}</span> <b>${s.score}</b></li>`).join('');
+    };
+
+    function startGame() {
+        const name = document.getElementById('player-name').value;
+        if(!name) return alert("Isi namamu!");
+        document.getElementById('name-display').innerText = name;
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        loadQ();
+    }
+
+    function loadQ() {
+        clearInterval(timer);
+        timeLeft = (currentLvl === 2) ? 20 : 30; // Level 3 lebih cepat
+        updateDisplay();
+        
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer-display').innerText = timeLeft + "s";
+            if(timeLeft <= 0) { handleWrong(); nextQ(); }
+        }, 1000);
+    }
+
+    function updateDisplay() {
+        const qData = questions[currentLvl][currentQ];
+        document.getElementById('question-text').innerText = qData.q;
+        document.getElementById('level-display').innerText = "Level " + (currentLvl + 1);
+        document.getElementById('answer-input').value = "";
+        document.getElementById('hint-box').innerText = "";
+        document.getElementById('timer-display').innerText = timeLeft + "s";
+    }
+
+    function checkAnswer() {
+        const ans = document.getElementById('answer-input').value.toLowerCase().trim();
+        const container = document.getElementById('game-container');
+        
+        if(ans === questions[currentLvl][currentQ].a) {
+            score += 100 + (timeLeft * 5);
+            container.classList.add('correct-anim');
+            setTimeout(() => { container.classList.remove('correct-anim'); nextQ(); }, 600);
+        } else {
+            handleWrong();
+        }
+    }
+
+    function handleWrong() {
+        lives--;
+        const container = document.getElementById('game-container');
+        container.classList.add('shake');
+        setTimeout(() => container.classList.remove('shake'), 400);
+        
+        document.getElementById('lives-display').innerText = "❤️".repeat(lives) || "💀";
+        if(lives <= 0) endGame();
+    }
+
+    function nextQ() {
+        currentQ++;
+        if(currentQ >= 5) { currentLvl++; currentQ = 0; }
+        if(currentLvl >= 3) endGame();
+        else loadQ();
+    }
+
+    function useHint() {
+        score -= 50;
+        document.getElementById('hint-box').innerText = "Hint: " + questions[currentLvl][currentQ].h;
+    }
+
+    function endGame() {
+        clearInterval(timer);
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('end-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+        
+        // Simpan ke Leaderboard
+        const name = document.getElementById('name-display').innerText;
+        let scores = JSON.parse(localStorage.getItem('archeologist_scores') || '[]');
+        scores.push({name, score});
+        scores.sort((a,b) => b.score - a.score);
+        localStorage.setItem('archeologist_scores', JSON.stringify(scores.slice(0, 5)));
+    }
+</script>
+</body>
+</html>
