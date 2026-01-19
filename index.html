@@ -3,188 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Lost Artifact - Level Selection</title>
+    <title>Math Maze by Arell</title>
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #e67e22;
-            --bg: #ecf0f1;
+            --accent: #2980b9;
+            --easy: #27ae60;
+            --medium: #f39c12;
+            --hard: #c0392b;
+            --bg: #dfe6e9;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--bg);
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg);
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+        }
+
+        /* Watermark Owner */
+        .owner-tag {
+            position: absolute;
+            top: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
         }
 
         #game-container {
             background: white;
+            background-image: radial-gradient(#bdc3c7 1px, transparent 1px);
+            background-size: 20px 20px;
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            border: 3px solid var(--primary);
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.2);
             width: 90%;
             max-width: 450px;
             text-align: center;
+            position: relative;
         }
 
         .hidden { display: none; }
+
+        h1 { margin-top: 20px; color: var(--primary); }
 
         input {
             padding: 12px;
             width: 80%;
             margin: 15px 0;
-            border: 2px solid #bdc3c7;
-            border-radius: 8px;
+            border: 2px solid var(--primary);
+            font-size: 18px;
+            text-align: center;
         }
 
         .btn {
-            padding: 12px 25px;
+            padding: 12px 20px;
             color: white;
-            border: none;
-            border-radius: 8px;
+            border: 2px solid var(--primary);
             cursor: pointer;
             font-weight: bold;
-            margin: 10px;
-            width: 80%;
-            display: inline-block;
+            margin: 10px 0;
+            width: 100%;
+            transition: 0.2s;
+            box-shadow: 4px 4px 0px var(--primary);
         }
 
+        .btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--primary); }
+
         .btn-start { background: var(--accent); }
-        .btn-easy { background: #27ae60; }
-        .btn-medium { background: #f1c40f; color: #333; }
-        .btn-hard { background: #e74c3c; }
+        .btn-easy { background: var(--easy); }
+        .btn-medium { background: var(--medium); }
+        .btn-hard { background: var(--hard); }
 
         .stats-bar {
             display: flex;
             justify-content: space-between;
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 10px;
             margin-bottom: 20px;
+            font-weight: bold;
+            border-bottom: 2px dashed var(--primary);
+            padding-bottom: 10px;
         }
 
-        /* Animasi */
+        #hint-box { font-size: 0.8em; color: #7f8c8d; margin-top: 10px; min-height: 20px; }
+
+        /* Animasi Salah */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
-        .shake { animation: shake 0.4s; }
+        .shake { animation: shake 0.3s; }
     </style>
 </head>
 <body>
 
+<div class="owner-tag">OWNER: ARELL</div>
+
 <div id="game-container">
-    <div id="screen-name">
-        <h1>🏺 Lost Artifact</h1>
-        <p>Nama Arkeolog:</p>
-        <input type="text" id="player-name" placeholder="Ketik namamu...">
-        <button class="btn btn-start" onclick="goToMenu()">LANJUT</button>
+    <div id="screen-login">
+        <h1>MATH MAZE 📐</h1>
+        <p>Masukkan Nama Siswa:</p>
+        <input type="text" id="player-name" placeholder="...">
+        <button class="btn btn-start" onclick="toMenu()">MASUK KELAS</button>
     </div>
 
     <div id="screen-menu" class="hidden">
         <h2>Pilih Tingkat Kesulitan</h2>
-        <p>Halo, <span id="hello-name"></span>!</p>
-        <button class="btn btn-easy" onclick="selectLevel(0)">MUDAH (45 Detik)</button>
-        <button class="btn btn-medium" onclick="selectLevel(1)">SEDANG (30 Detik)</button>
-        <button class="btn btn-hard" onclick="selectLevel(2)">SULIT (15 Detik)</button>
+        <p>Selamat datang, <span id="user-name"></span>!</p>
+        <button class="btn btn-easy" onclick="startLevel(0)">MUDAH (45 Detik)</button>
+        <button class="btn btn-medium" onclick="startLevel(1)">SEDANG (30 Detik)</button>
+        <button class="btn btn-hard" onclick="startLevel(2)">SULIT (15 Detik)</button>
     </div>
 
     <div id="screen-game" class="hidden">
         <div class="stats-bar">
-            <span id="display-lives">❤️❤️❤️</span>
-            <span id="display-timer" style="color:#e74c3c; font-weight:bold;">30s</span>
-            <span id="display-score">0</span>
+            <span id="stat-lives">❤️ ❤️ ❤️</span>
+            <span id="stat-timer">⏱️ 30s</span>
+            <span>Skor: <span id="stat-score">0</span></span>
         </div>
-        <p id="question-text" style="font-size: 1.2em; min-height: 50px;"></p>
-        <input type="text" id="answer-input" autocomplete="off">
+        <p id="level-title" style="font-weight: bold; color: var(--accent);"></p>
+        <p id="question-text" style="font-size: 1.4em; margin: 20px 0;"></p>
+        <input type="text" id="answer-input" autocomplete="off" placeholder="Jawaban...">
         <br>
-        <button class="btn btn-start" style="width:auto" onclick="checkAnswer()">KIRIM</button>
-        <button id="btn-hint" class="btn" style="width:auto; background:#3498db" onclick="useHint()">HINT (-50)</button>
-        <p id="hint-display" style="font-size: 0.8em; color: #7f8c8d;"></p>
+        <button class="btn btn-start" style="width:auto" onclick="checkAnswer()">JAWAB</button>
+        <button id="btn-hint" class="btn" style="width:auto; background:#95a5a6" onclick="getHint()">HINT (-50)</button>
+        <p id="hint-box"></p>
     </div>
 
-    <div id="screen-end" class="hidden">
-        <h1 id="end-title">Selesai!</h1>
-        <p>Skor Akhir Kamu:</p>
+    <div id="screen-result" class="hidden">
+        <h1 id="result-title">Selesai!</h1>
+        <p>Skor Akhir Anda:</p>
         <h2 id="final-score" style="font-size: 3em; color: var(--accent);">0</h2>
-        <button class="btn btn-start" onclick="location.reload()">MAIN LAGI</button>
+        <button class="btn btn-start" onclick="location.reload()">COBA LAGI</button>
     </div>
 </div>
 
 <script>
-    const allQuestions = [
-        // Level Mudah
-        [{q: "Aku punya banyak kunci tapi tak bisa buka pintu?", a: "piano", h: "Alat musik tuts"},
-         {q: "Apa yang bisa pecah tanpa disentuh?", a: "janji", h: "Terkait ucapan"},
-         {q: "Selalu di depan tapi tak terlihat?", a: "masa depan", h: "Waktu nanti"},
-         {q: "Punya kota tapi tak ada rumah?", a: "peta", h: "Kertas navigasi"},
-         {q: "Bisa memenuhi ruangan tapi tak makan tempat?", a: "cahaya", h: "Lawan gelap"}],
-        // Level Sedang
-        [{q: "3, 6, 12, 24, ...?", a: "48", h: "x2"},
-         {q: "Jika 1=5, 2=25, 3=125, maka 5=?", a: "1", h: "Cek baris pertama"},
-         {q: "Angka ganjil jadi genap kalau 'S' dibuang (B.Inggris)?", a: "seven", h: "7"},
-         {q: "Berapa angka 9 muncul dari 1-100?", a: "20", h: "Cek 90-99"},
-         {q: "Jam bunyi 3x dlm 3 detik, berapa x dlm 9 detik?", a: "9", h: "Konsisten"}],
-        // Level Sulit
-        [{q: "Pintu mana yang aman: Pintu Api atau Singa lapar 3 tahun?", a: "singa", h: "Singa mati"},
-         {q: "Salip orang di posisi kedua, kamu posisi berapa?", a: "kedua", h: "Bukan ke-1"},
-         {q: "Anak ke-5 Ayah Mary: Nana, Nene, Nini, Nono, ...?", a: "mary", h: "Nama ayahnya"},
-         {q: "Air membeku jadi jalan, terjadi di musim?", a: "dingin", h: "Salju"},
-         {q: "Aku tinggi saat muda, pendek saat tua, dan bercahaya?", a: "lilin", h: "Terbakar"}]
+    const mathQuestions = [
+        // MUDAH
+        [
+            {q: "12 x 4 + 2 = ?", a: "50", h: "Kalikan dulu baru tambah"},
+            {q: "Akar kuadrat dari 81?", a: "9", h: "x * x = 81"},
+            {q: "Pola: 2, 4, 8, 16, ...?", a: "32", h: "Dikali 2"},
+            {q: "15% dari 200?", a: "30", h: "0.15 * 200"},
+            {q: "Alas 10, Tinggi 5. Luas Segitiga?", a: "25", h: "0.5 * a * t"}
+        ],
+        // SEDANG
+        [
+            {q: "Jika 3x + 5 = 20, x = ?", a: "5", h: "Pindah ruas 5 jadi negatif"},
+            {q: "Hasil dari 2 + 5 x 2?", a: "12", h: "Gunakan aturan PEMDAS (Kali dulu)"},
+            {q: "Banyak sisi pada Oktagon?", a: "8", h: "Okta = 8"},
+            {q: "Derajat dalam lingkaran penuh?", a: "360", h: "Satu putaran jam"},
+            {q: "Bilangan prima setelah 11?", a: "13", h: "Bilangan yang hanya bisa dibagi 1 & dirinya sendiri"}
+        ],
+        // SULIT
+        [
+            {q: "Nilai π (Pi) 2 angka belakang koma?", a: "3.14", h: "Tiga koma..."},
+            {q: "Peluang bola biru dari 3 merah & 2 biru? (Desimal)", a: "0.4", h: "2 dibagi 5"},
+            {q: "2 pangkat 6 = ?", a: "64", h: "2 dikalikan 6 kali"},
+            {q: "Penemu rumus a² + b² = c²?", a: "pythagoras", h: "Nama matematikawan Yunani"},
+            {q: "Hasil dari 100 / 0.5?", a: "200", h: "Membagi setengah = dikali dua"}
+        ]
     ];
 
-    let playerName = "", selectedLvl = 0, currentQ = 0, score = 0, lives = 3, timer, timeLeft = 0;
+    let playerName = "", levelIdx = 0, questionIdx = 0, score = 0, lives = 3, timer, timeLeft = 0;
 
-    function goToMenu() {
+    function toMenu() {
         playerName = document.getElementById('player-name').value;
         if(!playerName) return alert("Masukkan namamu!");
-        document.getElementById('hello-name').innerText = playerName;
-        document.getElementById('screen-name').classList.add('hidden');
+        document.getElementById('user-name').innerText = playerName;
+        document.getElementById('screen-login').classList.add('hidden');
         document.getElementById('screen-menu').classList.remove('hidden');
     }
 
-    function selectLevel(lvl) {
-        selectedLvl = lvl;
+    function startLevel(idx) {
+        levelIdx = idx;
+        const titles = ["LEVEL: MUDAH", "LEVEL: SEDANG", "LEVEL: SULIT"];
+        document.getElementById('level-title').innerText = titles[idx];
+        if(idx === 2) document.getElementById('btn-hint').classList.add('hidden');
+        
         document.getElementById('screen-menu').classList.add('hidden');
         document.getElementById('screen-game').classList.remove('hidden');
-        
-        // Atur fitur berdasarkan level
-        if(lvl === 2) document.getElementById('btn-hint').classList.add('hidden');
-        
         loadQuestion();
     }
 
     function loadQuestion() {
         clearInterval(timer);
-        const timers = [45, 30, 15];
-        timeLeft = timers[selectedLvl];
+        const times = [45, 30, 15];
+        timeLeft = times[levelIdx];
         
-        document.getElementById('display-timer').innerText = timeLeft + "s";
-        document.getElementById('question-text').innerText = allQuestions[selectedLvl][currentQ].q;
+        document.getElementById('stat-timer').innerText = `⏱️ ${timeLeft}s`;
+        document.getElementById('question-text').innerText = mathQuestions[levelIdx][questionIdx].q;
         document.getElementById('answer-input').value = "";
-        document.getElementById('hint-display').innerText = "";
+        document.getElementById('hint-box').innerText = "";
         
         timer = setInterval(() => {
             timeLeft--;
-            document.getElementById('display-timer').innerText = timeLeft + "s";
-            if(timeLeft <= 0) { handleWrong(); nextQ(); }
+            document.getElementById('stat-timer').innerText = `⏱️ ${timeLeft}s`;
+            if(timeLeft <= 0) { handleWrong(); nextQuestion(); }
         }, 1000);
     }
 
     function checkAnswer() {
-        const ans = document.getElementById('answer-input').value.toLowerCase().trim();
-        const correct = allQuestions[selectedLvl][currentQ].a;
+        const userAns = document.getElementById('answer-input').value.toLowerCase().trim();
+        const correctAns = mathQuestions[levelIdx][questionIdx].a;
         
-        if(ans === correct) {
-            const multiplier = [1, 1.5, 2];
-            score += Math.round((100 + timeLeft) * multiplier[selectedLvl]);
-            document.getElementById('display-score').innerText = score;
-            nextQ();
+        if(userAns === correctAns) {
+            const multipliers = [1, 1.5, 2];
+            let bonus = (timeLeft < 5 && levelIdx === 2) ? 100 : 0; // Bonus kecepatan di level sulit
+            score += Math.round((100 + timeLeft) * multipliers[levelIdx]) + bonus;
+            document.getElementById('stat-score').innerText = score;
+            nextQuestion();
         } else {
             handleWrong();
         }
@@ -192,30 +226,32 @@
 
     function handleWrong() {
         lives--;
-        document.getElementById('game-container').classList.add('shake');
-        setTimeout(() => document.getElementById('game-container').classList.remove('shake'), 400);
-        document.getElementById('display-lives').innerText = "❤️".repeat(lives) || "💀";
+        const container = document.getElementById('game-container');
+        container.classList.add('shake');
+        setTimeout(() => container.classList.remove('shake'), 300);
+        
+        document.getElementById('stat-lives').innerText = "❤️ ".repeat(lives) || "💀";
         if(lives <= 0) endGame();
     }
 
-    function nextQ() {
-        currentQ++;
-        if(currentQ >= 5) endGame();
+    function nextQuestion() {
+        questionIdx++;
+        if(questionIdx >= 5) endGame();
         else loadQuestion();
     }
 
-    function useHint() {
+    function getHint() {
         score -= 50;
-        document.getElementById('display-score').innerText = score;
-        document.getElementById('hint-display').innerText = "Hint: " + allQuestions[selectedLvl][currentQ].h;
+        document.getElementById('stat-score').innerText = score;
+        document.getElementById('hint-box').innerText = "💡 " + mathQuestions[levelIdx][questionIdx].h;
     }
 
     function endGame() {
         clearInterval(timer);
         document.getElementById('screen-game').classList.add('hidden');
-        document.getElementById('screen-end').classList.remove('hidden');
+        document.getElementById('screen-result').classList.remove('hidden');
         document.getElementById('final-score').innerText = score;
-        if(lives <= 0) document.getElementById('end-title').innerText = "Gagal (Mati)";
+        if(lives <= 0) document.getElementById('result-title').innerText = "KUIS GAGAL ❌";
     }
 </script>
 </body>
