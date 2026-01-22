@@ -1,258 +1,186 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Maze by Arell</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #2980b9;
-            --easy: #27ae60;
-            --medium: #f39c12;
-            --hard: #c0392b;
-            --bg: #dfe6e9;
-        }
+<meta charset="UTF-8">
+<title>Game Menggambar Hewan</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #fdf6e3;
+  margin: 0;
+  text-align: center;
+}
 
-        body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: var(--bg);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+header {
+  background: #ff9800;
+  color: white;
+  padding: 15px;
+  font-size: 20px;
+}
 
-        /* Watermark Owner */
-        .owner-tag {
-            position: absolute;
-            top: 10px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-        }
+section {
+  padding: 20px;
+}
 
-        #game-container {
-            background: white;
-            background-image: radial-gradient(#bdc3c7 1px, transparent 1px);
-            background-size: 20px 20px;
-            padding: 30px;
-            border-radius: 10px;
-            border: 3px solid var(--primary);
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.2);
-            width: 90%;
-            max-width: 450px;
-            text-align: center;
-            position: relative;
-        }
+input, button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+}
 
-        .hidden { display: none; }
+button {
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-        h1 { margin-top: 20px; color: var(--primary); }
+button:hover {
+  background: #45a049;
+}
 
-        input {
-            padding: 12px;
-            width: 80%;
-            margin: 15px 0;
-            border: 2px solid var(--primary);
-            font-size: 18px;
-            text-align: center;
-        }
+canvas {
+  border: 2px solid #333;
+  background: white;
+  cursor: crosshair;
+}
 
-        .btn {
-            padding: 12px 20px;
-            color: white;
-            border: 2px solid var(--primary);
-            cursor: pointer;
-            font-weight: bold;
-            margin: 10px 0;
-            width: 100%;
-            transition: 0.2s;
-            box-shadow: 4px 4px 0px var(--primary);
-        }
+.tools button {
+  background: #2196f3;
+}
 
-        .btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--primary); }
+.hidden {
+  display: none;
+}
 
-        .btn-start { background: var(--accent); }
-        .btn-easy { background: var(--easy); }
-        .btn-medium { background: var(--medium); }
-        .btn-hard { background: var(--hard); }
-
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            font-weight: bold;
-            border-bottom: 2px dashed var(--primary);
-            padding-bottom: 10px;
-        }
-
-        #hint-box { font-size: 0.8em; color: #7f8c8d; margin-top: 10px; min-height: 20px; }
-
-        /* Animasi Salah */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        .shake { animation: shake 0.3s; }
-    </style>
+footer {
+  margin-top: 20px;
+  font-size: 14px;
+}
+</style>
 </head>
+
 <body>
 
-<div class="owner-tag">OWNER: ARELL</div>
+<header>
+  🎨 Game Menggambar Hewan  
+  <div style="font-size:14px;">Owner: Arell</div>
+</header>
 
-<div id="game-container">
-    <div id="screen-login">
-        <h1>MATH MAZE 📐</h1>
-        <p>Masukkan Nama Siswa:</p>
-        <input type="text" id="player-name" placeholder="...">
-        <button class="btn btn-start" onclick="toMenu()">MASUK KELAS</button>
-    </div>
+<!-- HALAMAN UTAMA -->
+<section id="home">
+  <h2>Masukkan Nama Pemain</h2>
+  <input type="text" id="playerName" placeholder="Nama kamu">
+  <br>
+  <button onclick="startGame()">Mulai</button>
+</section>
 
-    <div id="screen-menu" class="hidden">
-        <h2>Pilih Tingkat Kesulitan</h2>
-        <p>Selamat datang, <span id="user-name"></span>!</p>
-        <button class="btn btn-easy" onclick="startLevel(0)">MUDAH (45 Detik)</button>
-        <button class="btn btn-medium" onclick="startLevel(1)">SEDANG (30 Detik)</button>
-        <button class="btn btn-hard" onclick="startLevel(2)">SULIT (15 Detik)</button>
-    </div>
+<!-- PILIH LEVEL -->
+<section id="level" class="hidden">
+  <h2>Pilih Level</h2>
+  <button onclick="chooseLevel('Mudah')">Mudah</button>
+  <button onclick="chooseLevel('Sedang')">Sedang</button>
+  <button onclick="chooseLevel('Sulit')">Sulit</button>
+</section>
 
-    <div id="screen-game" class="hidden">
-        <div class="stats-bar">
-            <span id="stat-lives">❤️ ❤️ ❤️</span>
-            <span id="stat-timer">⏱️ 30s</span>
-            <span>Skor: <span id="stat-score">0</span></span>
-        </div>
-        <p id="level-title" style="font-weight: bold; color: var(--accent);"></p>
-        <p id="question-text" style="font-size: 1.4em; margin: 20px 0;"></p>
-        <input type="text" id="answer-input" autocomplete="off" placeholder="Jawaban...">
-        <br>
-        <button class="btn btn-start" style="width:auto" onclick="checkAnswer()">JAWAB</button>
-        <button id="btn-hint" class="btn" style="width:auto; background:#95a5a6" onclick="getHint()">HINT (-50)</button>
-        <p id="hint-box"></p>
-    </div>
+<!-- GAME -->
+<section id="game" class="hidden">
+  <h2 id="info"></h2>
 
-    <div id="screen-result" class="hidden">
-        <h1 id="result-title">Selesai!</h1>
-        <p>Skor Akhir Anda:</p>
-        <h2 id="final-score" style="font-size: 3em; color: var(--accent);">0</h2>
-        <button class="btn btn-start" onclick="location.reload()">COBA LAGI</button>
-    </div>
-</div>
+  <canvas id="canvas" width="300" height="300"></canvas>
+
+  <div class="tools">
+    <button onclick="setColor('black')">Hitam</button>
+    <button onclick="setColor('red')">Merah</button>
+    <button onclick="setColor('blue')">Biru</button>
+    <button onclick="setColor('green')">Hijau</button>
+    <button onclick="erase()">Penghapus</button>
+    <button onclick="clearCanvas()">Ulangi</button>
+  </div>
+
+  <br>
+  <button onclick="finish()">Selesai</button>
+</section>
+
+<!-- HASIL -->
+<section id="result" class="hidden">
+  <h2 id="resultText"></h2>
+  <button onclick="location.reload()">Main Lagi</button>
+</section>
+
+<footer>
+  © 2026 Game Edukasi Menggambar Hewan
+</footer>
 
 <script>
-    const mathQuestions = [
-        // MUDAH
-        [
-            {q: "12 x 4 + 2 = ?", a: "50", h: "Kalikan dulu baru tambah"},
-            {q: "Akar kuadrat dari 81?", a: "9", h: "x * x = 81"},
-            {q: "Pola: 2, 4, 8, 16, ...?", a: "32", h: "Dikali 2"},
-            {q: "15% dari 200?", a: "30", h: "0.15 * 200"},
-            {q: "Alas 10, Tinggi 5. Luas Segitiga?", a: "25", h: "0.5 * a * t"}
-        ],
-        // SEDANG
-        [
-            {q: "Jika 3x + 5 = 20, x = ?", a: "5", h: "Pindah ruas 5 jadi negatif"},
-            {q: "Hasil dari 2 + 5 x 2?", a: "12", h: "Gunakan aturan PEMDAS (Kali dulu)"},
-            {q: "Banyak sisi pada Oktagon?", a: "8", h: "Okta = 8"},
-            {q: "Derajat dalam lingkaran penuh?", a: "360", h: "Satu putaran jam"},
-            {q: "Bilangan prima setelah 11?", a: "13", h: "Bilangan yang hanya bisa dibagi 1 & dirinya sendiri"}
-        ],
-        // SULIT
-        [
-            {q: "Nilai π (Pi) 2 angka belakang koma?", a: "3.14", h: "Tiga koma..."},
-            {q: "Peluang bola biru dari 3 merah & 2 biru? (Desimal)", a: "0.4", h: "2 dibagi 5"},
-            {q: "2 pangkat 6 = ?", a: "64", h: "2 dikalikan 6 kali"},
-            {q: "Penemu rumus a² + b² = c²?", a: "pythagoras", h: "Nama matematikawan Yunani"},
-            {q: "Hasil dari 100 / 0.5?", a: "200", h: "Membagi setengah = dikali dua"}
-        ]
-    ];
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+let drawing = false;
+let color = "black";
+let player = "";
+let level = "";
+let animal = "";
 
-    let playerName = "", levelIdx = 0, questionIdx = 0, score = 0, lives = 3, timer, timeLeft = 0;
+const animals = {
+  Mudah: ["Kucing", "Ikan"],
+  Sedang: ["Burung", "Kura-kura"],
+  Sulit: ["Gajah", "Singa"]
+};
 
-    function toMenu() {
-        playerName = document.getElementById('player-name').value;
-        if(!playerName) return alert("Masukkan namamu!");
-        document.getElementById('user-name').innerText = playerName;
-        document.getElementById('screen-login').classList.add('hidden');
-        document.getElementById('screen-menu').classList.remove('hidden');
-    }
+canvas.addEventListener("mousedown", () => drawing = true);
+canvas.addEventListener("mouseup", () => drawing = false);
+canvas.addEventListener("mousemove", draw);
 
-    function startLevel(idx) {
-        levelIdx = idx;
-        const titles = ["LEVEL: MUDAH", "LEVEL: SEDANG", "LEVEL: SULIT"];
-        document.getElementById('level-title').innerText = titles[idx];
-        if(idx === 2) document.getElementById('btn-hint').classList.add('hidden');
-        
-        document.getElementById('screen-menu').classList.add('hidden');
-        document.getElementById('screen-game').classList.remove('hidden');
-        loadQuestion();
-    }
+function draw(e) {
+  if (!drawing) return;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(e.offsetX, e.offsetY, 4, 0, Math.PI * 2);
+  ctx.fill();
+}
 
-    function loadQuestion() {
-        clearInterval(timer);
-        const times = [45, 30, 15];
-        timeLeft = times[levelIdx];
-        
-        document.getElementById('stat-timer').innerText = `⏱️ ${timeLeft}s`;
-        document.getElementById('question-text').innerText = mathQuestions[levelIdx][questionIdx].q;
-        document.getElementById('answer-input').value = "";
-        document.getElementById('hint-box').innerText = "";
-        
-        timer = setInterval(() => {
-            timeLeft--;
-            document.getElementById('stat-timer').innerText = `⏱️ ${timeLeft}s`;
-            if(timeLeft <= 0) { handleWrong(); nextQuestion(); }
-        }, 1000);
-    }
+function setColor(c) {
+  color = c;
+}
 
-    function checkAnswer() {
-        const userAns = document.getElementById('answer-input').value.toLowerCase().trim();
-        const correctAns = mathQuestions[levelIdx][questionIdx].a;
-        
-        if(userAns === correctAns) {
-            const multipliers = [1, 1.5, 2];
-            let bonus = (timeLeft < 5 && levelIdx === 2) ? 100 : 0; // Bonus kecepatan di level sulit
-            score += Math.round((100 + timeLeft) * multipliers[levelIdx]) + bonus;
-            document.getElementById('stat-score').innerText = score;
-            nextQuestion();
-        } else {
-            handleWrong();
-        }
-    }
+function erase() {
+  color = "white";
+}
 
-    function handleWrong() {
-        lives--;
-        const container = document.getElementById('game-container');
-        container.classList.add('shake');
-        setTimeout(() => container.classList.remove('shake'), 300);
-        
-        document.getElementById('stat-lives').innerText = "❤️ ".repeat(lives) || "💀";
-        if(lives <= 0) endGame();
-    }
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 
-    function nextQuestion() {
-        questionIdx++;
-        if(questionIdx >= 5) endGame();
-        else loadQuestion();
-    }
+function startGame() {
+  player = document.getElementById("playerName").value;
+  if (player === "") {
+    alert("Masukkan nama dulu!");
+    return;
+  }
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("level").classList.remove("hidden");
+}
 
-    function getHint() {
-        score -= 50;
-        document.getElementById('stat-score').innerText = score;
-        document.getElementById('hint-box').innerText = "💡 " + mathQuestions[levelIdx][questionIdx].h;
-    }
+function chooseLevel(lv) {
+  level = lv;
+  let list = animals[level];
+  animal = list[Math.floor(Math.random() * list.length)];
 
-    function endGame() {
-        clearInterval(timer);
-        document.getElementById('screen-game').classList.add('hidden');
-        document.getElementById('screen-result').classList.remove('hidden');
-        document.getElementById('final-score').innerText = score;
-        if(lives <= 0) document.getElementById('result-title').innerText = "KUIS GAGAL ❌";
-    }
+  document.getElementById("level").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+  document.getElementById("info").innerText =
+    player + " | Level: " + level + " | Gambar: " + animal;
+}
+
+function finish() {
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+
+  document.getElementById("resultText").innerText =
+    "Hebat, " + player + "! 🎉\nKamu telah menggambar " + animal + "!";
+}
 </script>
+
 </body>
 </html>
