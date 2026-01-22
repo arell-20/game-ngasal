@@ -2,60 +2,40 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Game Menggambar Hewan</title>
+<title>Mewarnai Singa</title>
 <style>
 body {
   font-family: Arial, sans-serif;
-  background: #fdf6e3;
-  margin: 0;
+  background: #fff3e0;
   text-align: center;
+  margin: 0;
 }
 
 header {
   background: #ff9800;
   color: white;
   padding: 15px;
-  font-size: 20px;
-}
-
-section {
-  padding: 20px;
-}
-
-input, button {
-  padding: 10px;
-  margin: 5px;
-  font-size: 16px;
-}
-
-button {
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #45a049;
+  font-size: 22px;
 }
 
 canvas {
   border: 2px solid #333;
   background: white;
+  margin-top: 15px;
   cursor: crosshair;
 }
 
-.tools button {
-  background: #2196f3;
-}
-
-.hidden {
-  display: none;
+button {
+  padding: 8px 12px;
+  margin: 5px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 footer {
-  margin-top: 20px;
+  margin-top: 15px;
   font-size: 14px;
 }
 </style>
@@ -64,69 +44,33 @@ footer {
 <body>
 
 <header>
-  🎨 Game Menggambar Hewan  
+  🦁 Mewarnai Singa  
   <div style="font-size:14px;">Owner: Arell</div>
 </header>
 
-<!-- HALAMAN UTAMA -->
-<section id="home">
-  <h2>Masukkan Nama Pemain</h2>
-  <input type="text" id="playerName" placeholder="Nama kamu">
-  <br>
-  <button onclick="startGame()">Mulai</button>
-</section>
+<h3>Pilih Warna & Warnai Singanya 🎨</h3>
 
-<!-- PILIH LEVEL -->
-<section id="level" class="hidden">
-  <h2>Pilih Level</h2>
-  <button onclick="chooseLevel('Mudah')">Mudah</button>
-  <button onclick="chooseLevel('Sedang')">Sedang</button>
-  <button onclick="chooseLevel('Sulit')">Sulit</button>
-</section>
+<canvas id="canvas" width="320" height="320"></canvas>
 
-<!-- GAME -->
-<section id="game" class="hidden">
-  <h2 id="info"></h2>
+<br>
 
-  <canvas id="canvas" width="300" height="300"></canvas>
-
-  <div class="tools">
-    <button onclick="setColor('black')">Hitam</button>
-    <button onclick="setColor('red')">Merah</button>
-    <button onclick="setColor('blue')">Biru</button>
-    <button onclick="setColor('green')">Hijau</button>
-    <button onclick="erase()">Penghapus</button>
-    <button onclick="clearCanvas()">Ulangi</button>
-  </div>
-
-  <br>
-  <button onclick="finish()">Selesai</button>
-</section>
-
-<!-- HASIL -->
-<section id="result" class="hidden">
-  <h2 id="resultText"></h2>
-  <button onclick="location.reload()">Main Lagi</button>
-</section>
+<!-- WARNA -->
+<button onclick="setColor('#fbc02d')" style="background:#fbc02d">Kuning</button>
+<button onclick="setColor('#ff9800')" style="background:#ff9800">Oranye</button>
+<button onclick="setColor('#795548')" style="background:#795548;color:white">Coklat</button>
+<button onclick="setColor('#000')" style="background:black;color:white">Hitam</button>
+<button onclick="clearColor()">Ulangi</button>
 
 <footer>
-  © 2026 Game Edukasi Menggambar Hewan
+  🎨 Warnai bagian dalam singa dengan bebas
 </footer>
 
 <script>
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-let drawing = false;
-let color = "black";
-let player = "";
-let level = "";
-let animal = "";
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-const animals = {
-  Mudah: ["Kucing", "Ikan"],
-  Sedang: ["Burung", "Kura-kura"],
-  Sulit: ["Gajah", "Singa"]
-};
+let drawing = false;
+let color = "#fbc02d";
 
 canvas.addEventListener("mousedown", () => drawing = true);
 canvas.addEventListener("mouseup", () => drawing = false);
@@ -136,7 +80,7 @@ function draw(e) {
   if (!drawing) return;
   ctx.fillStyle = color;
   ctx.beginPath();
-  ctx.arc(e.offsetX, e.offsetY, 4, 0, Math.PI * 2);
+  ctx.arc(e.offsetX, e.offsetY, 5, 0, Math.PI * 2);
   ctx.fill();
 }
 
@@ -144,42 +88,66 @@ function setColor(c) {
   color = c;
 }
 
-function erase() {
-  color = "white";
-}
-
-function clearCanvas() {
+function clearColor() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawLion();
 }
 
-function startGame() {
-  player = document.getElementById("playerName").value;
-  if (player === "") {
-    alert("Masukkan nama dulu!");
-    return;
-  }
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("level").classList.remove("hidden");
+/* ===== GAMBAR OUTLINE SINGA ===== */
+function drawLion() {
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 3;
+
+  // kepala
+  ctx.beginPath();
+  ctx.arc(160, 160, 70, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // surai
+  ctx.beginPath();
+  ctx.arc(160, 160, 100, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // telinga
+  ctx.beginPath();
+  ctx.arc(110, 80, 20, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(210, 80, 20, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // mata
+  ctx.beginPath();
+  ctx.arc(140, 150, 5, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(180, 150, 5, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // hidung
+  ctx.beginPath();
+  ctx.moveTo(160, 160);
+  ctx.lineTo(150, 175);
+  ctx.lineTo(170, 175);
+  ctx.closePath();
+  ctx.stroke();
+
+  // mulut
+  ctx.beginPath();
+  ctx.moveTo(160, 175);
+  ctx.lineTo(145, 190);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(160, 175);
+  ctx.lineTo(175, 190);
+  ctx.stroke();
 }
 
-function chooseLevel(lv) {
-  level = lv;
-  let list = animals[level];
-  animal = list[Math.floor(Math.random() * list.length)];
-
-  document.getElementById("level").classList.add("hidden");
-  document.getElementById("game").classList.remove("hidden");
-  document.getElementById("info").innerText =
-    player + " | Level: " + level + " | Gambar: " + animal;
-}
-
-function finish() {
-  document.getElementById("game").classList.add("hidden");
-  document.getElementById("result").classList.remove("hidden");
-
-  document.getElementById("resultText").innerText =
-    "Hebat, " + player + "! 🎉\nKamu telah menggambar " + animal + "!";
-}
+// gambar saat pertama buka
+drawLion();
 </script>
 
 </body>
