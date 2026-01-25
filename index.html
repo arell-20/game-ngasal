@@ -1,154 +1,118 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Mewarnai Singa</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: #fff3e0;
-  text-align: center;
-  margin: 0;
-}
-
-header {
-  background: #ff9800;
-  color: white;
-  padding: 15px;
-  font-size: 22px;
-}
-
-canvas {
-  border: 2px solid #333;
-  background: white;
-  margin-top: 15px;
-  cursor: crosshair;
-}
-
-button {
-  padding: 8px 12px;
-  margin: 5px;
-  font-size: 14px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-footer {
-  margin-top: 15px;
-  font-size: 14px;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Akuntansi SMA</title>
+  <style>
+    body{font-family:Arial;background:#f2f6ff;margin:0}
+    header{background:#2b4eff;color:#fff;padding:15px;text-align:center}
+    nav{background:#1d36b8;text-align:center;padding:10px}
+    nav button{margin:5px;padding:8px 14px;border:none;border-radius:6px;cursor:pointer}
+    .container{max-width:900px;margin:auto;padding:20px}
+    .card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,.1)}
+    .hidden{display:none}
+    button{background:#2b4eff;color:#fff;border:none;border-radius:6px;padding:10px 14px;cursor:pointer}
+    footer{text-align:center;color:#666;margin:20px}
+    label{display:block;margin:6px 0}
+  </style>
 </head>
-
 <body>
-
 <header>
-  🦁 Mewarnai Singa  
-  <div style="font-size:14px;">Owner: Arell</div>
+  <h1>🎓 Game Akuntansi SMA</h1>
+  <p>Latihan Soal & Kunci Jawaban</p>
 </header>
 
-<h3>Pilih Warna & Warnai Singanya 🎨</h3>
+<nav>
+  <button onclick="showPage('home')">Beranda</button>
+  <button onclick="showPage('level')">Pilih Level</button>
+  <button onclick="showPage('answer')">Kunci Jawaban</button>
+  <button onclick="showPage('about')">Tentang</button>
+  <button onclick="showPage('essay')">Soal Esai</button>
+</nav>
 
-<canvas id="canvas" width="320" height="320"></canvas>
+<div class="container">
 
-<br>
+<!-- HOME -->
+<div id="home" class="card">
+  <h2>Selamat Datang</h2>
+  <p>Game ini berisi soal Akuntansi SMA dengan 3 level. Setiap level terdiri dari <b>25 soal</b>.</p>
+</div>
 
-<!-- WARNA -->
-<button onclick="setColor('#fbc02d')" style="background:#fbc02d">Kuning</button>
-<button onclick="setColor('#ff9800')" style="background:#ff9800">Oranye</button>
-<button onclick="setColor('#795548')" style="background:#795548;color:white">Coklat</button>
-<button onclick="setColor('#000')" style="background:black;color:white">Hitam</button>
-<button onclick="clearColor()">Ulangi</button>
+<!-- LEVEL -->
+<div id="level" class="card hidden">
+  <h2>Pilih Level</h2>
+  <button onclick="startLevel('easy')">Mudah</button>
+  <button onclick="startLevel('medium')">Sedang</button>
+  <button onclick="startLevel('hard')">Sulit</button>
+</div>
 
-<footer>
-  🎨 Warnai bagian dalam singa dengan bebas
-</footer>
+<!-- GAME -->
+<div id="game" class="card hidden">
+  <h2 id="levelTitle"></h2>
+  <div id="quiz"></div>
+  <button onclick="nextQuestion()">Soal Berikutnya</button>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="card hidden">
+  <h2>Hasil</h2>
+  <p id="scoreText"></p>
+  <button onclick="showPage('level')">Kembali</button>
+</div>
+
+<!-- ESSAY -->
+<div id="essay" class="card hidden">
+  <h2>✍️ Soal Esai Akuntansi SMA (10 Soal)</h2>
+  <ol>
+    <li>Jelaskan pengertian akuntansi menurut pendapatmu sendiri.</li>
+    <li>Sebutkan dan jelaskan persamaan dasar akuntansi.</li>
+    <li>Mengapa pencatatan transaksi keuangan penting bagi perusahaan?</li>
+    <li>Jelaskan perbedaan antara harta dan utang.</li>
+    <li>Sebutkan minimal 3 contoh akun harta beserta penjelasannya.</li>
+    <li>Apa yang dimaksud dengan jurnal umum?</li>
+    <li>Jelaskan fungsi laporan laba rugi bagi perusahaan.</li>
+    <li>Apa tujuan pembuatan laporan keuangan?</li>
+    <li>Jelaskan perbedaan laporan neraca dan laporan laba rugi.</li>
+    <li>Mengapa ketelitian sangat diperlukan dalam akuntansi?</li>
+  </ol>
+</div>
+
+<!-- ANSWER KEY -->
+<div id="answer" class="card hidden">
+  <h2>📑 Kunci Jawaban</h2>
+  <p><b>Level Mudah:</b> 1A,2A,3C,4B,5C,6A,7A,8C,9B,10A,11C,12A,13B,14C,15A,16B,17C,18A,19B,20A,21C,22A,23B,24C,25A</p>
+  <p><b>Level Sedang:</b> 1A,2C,3B,4A,5C,6A,7B,8A,9C,10B,11A,12C,13B,14A,15C,16B,17A,18C,19B,20A,21C,22B,23A,24C,25B</p>
+  <p><b>Level Sulit:</b> 1B,2C,3A,4B,5C,6A,7B,8C,9A,10B,11C,12A,13B,14C,15A,16B,17C,18A,19B,20C,21A,22B,23C,24A,25B</p>
+</div>
+
+<!-- ABOUT -->
+<div id="about" class="card hidden">
+  <h2>Tentang</h2>
+  <p>Game edukasi Akuntansi SMA untuk latihan menghadapi ulangan dan ujian.</p>
+  <p><b>Owner:</b> arell</p>
+</div>
+</div>
+
+<footer>© Game Akuntansi SMA</footer>
 
 <script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+const pages=['home','level','game','result','answer','about'];
+function showPage(id){pages.forEach(p=>document.getElementById(p).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
 
-let drawing = false;
-let color = "#fbc02d";
+let questions={
+ easy:Array.from({length:25},(_,i)=>({q:`Soal Mudah ${i+1}: Akun kas termasuk?`,o:['Harta','Utang','Modal'],a:0})),
+ medium:Array.from({length:25},(_,i)=>({q:`Soal Sedang ${i+1}: Persamaan dasar akuntansi?`,o:['Harta=Modal-Utang','Utang=Harta+Modal','Harta=Utang+Modal'],a:2})),
+ hard:Array.from({length:25},(_,i)=>({q:`Soal Sulit ${i+1}: Laporan posisi keuangan?`,o:['Laba rugi','Neraca','Arus kas'],a:1}))
+};
 
-canvas.addEventListener("mousedown", () => drawing = true);
-canvas.addEventListener("mouseup", () => drawing = false);
-canvas.addEventListener("mousemove", draw);
+let level='',index=0,score=0;
 
-function draw(e) {
-  if (!drawing) return;
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.arc(e.offsetX, e.offsetY, 5, 0, Math.PI * 2);
-  ctx.fill();
-}
+function startLevel(l){level=l;index=0;score=0;showPage('game');document.getElementById('levelTitle').innerText='Level '+l.toUpperCase();showQuestion();}
 
-function setColor(c) {
-  color = c;
-}
+function showQuestion(){const q=questions[level][index];let html=`<p><b>${index+1}. ${q.q}</b></p>`;q.o.forEach((op,i)=>{html+=`<label><input type='radio' name='opt' value='${i}'> ${op}</label>`});document.getElementById('quiz').innerHTML=html;}
 
-function clearColor() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawLion();
-}
-
-/* ===== GAMBAR OUTLINE SINGA ===== */
-function drawLion() {
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 3;
-
-  // kepala
-  ctx.beginPath();
-  ctx.arc(160, 160, 70, 0, Math.PI * 2);
-  ctx.stroke();
-
-  // surai
-  ctx.beginPath();
-  ctx.arc(160, 160, 100, 0, Math.PI * 2);
-  ctx.stroke();
-
-  // telinga
-  ctx.beginPath();
-  ctx.arc(110, 80, 20, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(210, 80, 20, 0, Math.PI * 2);
-  ctx.stroke();
-
-  // mata
-  ctx.beginPath();
-  ctx.arc(140, 150, 5, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(180, 150, 5, 0, Math.PI * 2);
-  ctx.stroke();
-
-  // hidung
-  ctx.beginPath();
-  ctx.moveTo(160, 160);
-  ctx.lineTo(150, 175);
-  ctx.lineTo(170, 175);
-  ctx.closePath();
-  ctx.stroke();
-
-  // mulut
-  ctx.beginPath();
-  ctx.moveTo(160, 175);
-  ctx.lineTo(145, 190);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(160, 175);
-  ctx.lineTo(175, 190);
-  ctx.stroke();
-}
-
-// gambar saat pertama buka
-drawLion();
+function nextQuestion(){const sel=document.querySelector('input[name=opt]:checked');if(!sel)return alert('Pilih jawaban');if(parseInt(sel.value)===questions[level][index].a)score+=4;index++;if(index<25)showQuestion();else{showPage('result');document.getElementById('scoreText').innerText='Skor kamu: '+score;}}
 </script>
-
 </body>
 </html>
