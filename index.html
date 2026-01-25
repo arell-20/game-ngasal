@@ -63,19 +63,55 @@
 
 <!-- ESSAY -->
 <div id="essay" class="card hidden">
-  <h2>✍️ Soal Esai Akuntansi SMA (10 Soal)</h2>
-  <ol>
-    <li>Jelaskan pengertian akuntansi menurut pendapatmu sendiri.</li>
-    <li>Sebutkan dan jelaskan persamaan dasar akuntansi.</li>
-    <li>Mengapa pencatatan transaksi keuangan penting bagi perusahaan?</li>
-    <li>Jelaskan perbedaan antara harta dan utang.</li>
-    <li>Sebutkan minimal 3 contoh akun harta beserta penjelasannya.</li>
-    <li>Apa yang dimaksud dengan jurnal umum?</li>
-    <li>Jelaskan fungsi laporan laba rugi bagi perusahaan.</li>
-    <li>Apa tujuan pembuatan laporan keuangan?</li>
-    <li>Jelaskan perbedaan laporan neraca dan laporan laba rugi.</li>
-    <li>Mengapa ketelitian sangat diperlukan dalam akuntansi?</li>
-  </ol>
+  <h2>✍️ Soal Esai Akuntansi SMA</h2>
+  <p>Jawablah pertanyaan berikut dengan singkat dan jelas.</p>
+
+  <form id="essayForm">
+    <ol>
+      <li>
+        Jelaskan pengertian akuntansi menurut pendapatmu sendiri.<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li><br>
+      <li>
+        Sebutkan dan jelaskan persamaan dasar akuntansi.<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li><br>
+      <li>
+        Mengapa pencatatan transaksi keuangan penting bagi perusahaan?<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li><br>
+      <li>
+        Jelaskan perbedaan antara harta dan utang.<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li><br>
+      <li>
+        Sebutkan minimal 3 contoh akun harta beserta penjelasannya.<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li><br>
+      <li>
+        Apa yang dimaksud dengan jurnal umum?<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li><br>
+      <li>
+        Jelaskan fungsi laporan laba rugi bagi perusahaan.<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li><br>
+      <li>
+        Apa tujuan pembuatan laporan keuangan?<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li><br>
+      <li>
+        Jelaskan perbedaan laporan neraca dan laporan laba rugi.<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li><br>
+      <li>
+        Mengapa ketelitian sangat diperlukan dalam akuntansi?<br>
+        <textarea rows="3" style="width:100%"></textarea>
+      </li>
+    </ol>
+
+    <button type="button" onclick="submitEssay()">Kumpulkan Jawaban</button>
+  </form>
 </div>
 
 <!-- ANSWER KEY -->
@@ -97,7 +133,7 @@
 <footer>© Game Akuntansi SMA</footer>
 
 <script>
-const pages=['home','level','game','result','answer','about'];
+const pages=['home','level','game','result','answer','essay','about'];
 function showPage(id){pages.forEach(p=>document.getElementById(p).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
 
 let questions={
@@ -113,6 +149,9 @@ function startLevel(l){level=l;index=0;score=0;showPage('game');document.getElem
 function showQuestion(){const q=questions[level][index];let html=`<p><b>${index+1}. ${q.q}</b></p>`;q.o.forEach((op,i)=>{html+=`<label><input type='radio' name='opt' value='${i}'> ${op}</label>`});document.getElementById('quiz').innerHTML=html;}
 
 function nextQuestion(){const sel=document.querySelector('input[name=opt]:checked');if(!sel)return alert('Pilih jawaban');if(parseInt(sel.value)===questions[level][index].a)score+=4;index++;if(index<25)showQuestion();else{showPage('result');document.getElementById('scoreText').innerText='Skor kamu: '+score;}}
+function submitEssay(){
+  alert('Jawaban esai berhasil dikumpulkan! (simulasi)');
+}
 </script>
 </body>
 </html>
