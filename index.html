@@ -1,156 +1,127 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Game Akuntansi SMA</title>
   <style>
-    body{font-family:Arial;background:#f2f6ff;margin:0}
+    body{margin:0;font-family:Arial;background:#f2f6ff}
     header{background:#2b4eff;color:#fff;padding:15px;text-align:center}
-    nav{background:#1d36b8;text-align:center;padding:10px}
-    nav button{margin:5px;padding:8px 14px;border:none;border-radius:6px;cursor:pointer}
-    .container{max-width:900px;margin:auto;padding:20px}
-    .card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,.1)}
-    .hidden{display:none}
-    button{background:#2b4eff;color:#fff;border:none;border-radius:6px;padding:10px 14px;cursor:pointer}
+    nav{background:#1d36b8;display:flex;justify-content:center;gap:10px;padding:10px}
+    nav button{background:#fff;color:#1d36b8;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;font-weight:bold}
+    nav button:hover{background:#dfe5ff}
+    .page{display:none;max-width:900px;margin:20px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,.1)}
+    .page.active{display:block}
     footer{text-align:center;color:#666;margin:20px}
     label{display:block;margin:6px 0}
+    textarea{width:100%}
   </style>
 </head>
 <body>
+
 <header>
   <h1>🎓 Game Akuntansi SMA</h1>
-  <p>Latihan Soal & Kunci Jawaban</p>
+  <p>Website Edukasi Akuntansi Interaktif</p>
 </header>
 
 <nav>
-  <button onclick="showPage('home')">Beranda</button>
-  <button onclick="showPage('level')">Pilih Level</button>
-  <button onclick="showPage('answer')">Kunci Jawaban</button>
-  <button onclick="showPage('about')">Tentang</button>
-  <button onclick="showPage('essay')">Soal Esai</button>
+  <button onclick="openPage('home')">Beranda</button>
+  <button onclick="openPage('materi')">Materi</button>
+  <button onclick="openPage('level')">Soal PG</button>
+  <button onclick="openPage('essay')">Soal Esai</button>
+  <button onclick="openPage('answer')">Kunci Jawaban</button>
+  <button onclick="openPage('about')">Tentang</button>
 </nav>
 
-<div class="container">
-
-<!-- HOME -->
-<div id="home" class="card">
-  <h2>Selamat Datang</h2>
-  <p>Game ini berisi soal Akuntansi SMA dengan 3 level. Setiap level terdiri dari <b>25 soal</b>.</p>
+<!-- BERANDA -->
+<div id="home" class="page active">
+  <h2>Beranda</h2>
+  <p>Selamat datang di website permainan akuntansi SMA. Website ini dirancang untuk membantu siswa belajar melalui soal pilihan ganda dan esai.</p>
 </div>
 
-<!-- LEVEL -->
-<div id="level" class="card hidden">
-  <h2>Pilih Level</h2>
+<!-- MATERI -->
+<div id="materi" class="page">
+  <h2>Materi Akuntansi Dasar</h2>
+  <ul>
+    <li>Pengertian Akuntansi</li>
+    <li>Persamaan Dasar Akuntansi</li>
+    <li>Jenis-jenis Akun</li>
+    <li>Laporan Keuangan</li>
+  </ul>
+</div>
+
+<!-- LEVEL / PG -->
+<div id="level" class="page">
+  <h2>Pilih Level Soal Pilihan Ganda</h2>
   <button onclick="startLevel('easy')">Mudah</button>
   <button onclick="startLevel('medium')">Sedang</button>
   <button onclick="startLevel('hard')">Sulit</button>
-</div>
-
-<!-- GAME -->
-<div id="game" class="card hidden">
-  <h2 id="levelTitle"></h2>
-  <div id="quiz"></div>
-  <button onclick="nextQuestion()">Soal Berikutnya</button>
-</div>
-
-<!-- RESULT -->
-<div id="result" class="card hidden">
-  <h2>Hasil</h2>
-  <p id="scoreText"></p>
-  <button onclick="showPage('level')">Kembali</button>
+  <div id="pgGame"></div>
 </div>
 
 <!-- ESSAY -->
-<div id="essay" class="card hidden">
-  <h2>✍️ Soal Esai Akuntansi SMA</h2>
-  <p>Jawablah pertanyaan berikut dengan singkat dan jelas.</p>
-
-  <form id="essayForm">
-    <ol>
-      <li>
-        Jelaskan pengertian akuntansi menurut pendapatmu sendiri.<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li><br>
-      <li>
-        Sebutkan dan jelaskan persamaan dasar akuntansi.<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li><br>
-      <li>
-        Mengapa pencatatan transaksi keuangan penting bagi perusahaan?<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li><br>
-      <li>
-        Jelaskan perbedaan antara harta dan utang.<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li><br>
-      <li>
-        Sebutkan minimal 3 contoh akun harta beserta penjelasannya.<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li><br>
-      <li>
-        Apa yang dimaksud dengan jurnal umum?<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li><br>
-      <li>
-        Jelaskan fungsi laporan laba rugi bagi perusahaan.<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li><br>
-      <li>
-        Apa tujuan pembuatan laporan keuangan?<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li><br>
-      <li>
-        Jelaskan perbedaan laporan neraca dan laporan laba rugi.<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li><br>
-      <li>
-        Mengapa ketelitian sangat diperlukan dalam akuntansi?<br>
-        <textarea rows="3" style="width:100%"></textarea>
-      </li>
-    </ol>
-
-    <button type="button" onclick="submitEssay()">Kumpulkan Jawaban</button>
-  </form>
+<div id="essay" class="page">
+  <h2>Soal Esai</h2>
+  <ol>
+    <li>Jelaskan pengertian akuntansi!<br><textarea rows="3"></textarea></li>
+    <li>Jelaskan persamaan dasar akuntansi!<br><textarea rows="3"></textarea></li>
+    <li>Mengapa pencatatan transaksi penting?<br><textarea rows="3"></textarea></li>
+    <li>Jelaskan perbedaan harta dan utang!<br><textarea rows="3"></textarea></li>
+    <li>Sebutkan contoh akun harta!<br><textarea rows="3"></textarea></li>
+    <li>Apa itu jurnal umum?<br><textarea rows="3"></textarea></li>
+    <li>Fungsi laporan laba rugi?<br><textarea rows="3"></textarea></li>
+    <li>Tujuan laporan keuangan?<br><textarea rows="3"></textarea></li>
+    <li>Perbedaan neraca dan laba rugi?<br><textarea rows="3"></textarea></li>
+    <li>Mengapa ketelitian penting?<br><textarea rows="3"></textarea></li>
+  </ol>
+  <button onclick="alert('Jawaban esai dikumpulkan (simulasi)')">Kumpulkan</button>
 </div>
 
-<!-- ANSWER KEY -->
-<div id="answer" class="card hidden">
-  <h2>📑 Kunci Jawaban</h2>
-  <p><b>Level Mudah:</b> 1A,2A,3C,4B,5C,6A,7A,8C,9B,10A,11C,12A,13B,14C,15A,16B,17C,18A,19B,20A,21C,22A,23B,24C,25A</p>
-  <p><b>Level Sedang:</b> 1A,2C,3B,4A,5C,6A,7B,8A,9C,10B,11A,12C,13B,14A,15C,16B,17A,18C,19B,20A,21C,22B,23A,24C,25B</p>
-  <p><b>Level Sulit:</b> 1B,2C,3A,4B,5C,6A,7B,8C,9A,10B,11C,12A,13B,14C,15A,16B,17C,18A,19B,20C,21A,22B,23C,24A,25B</p>
+<!-- KUNCI -->
+<div id="answer" class="page">
+  <h2>Kunci Jawaban Pilihan Ganda</h2>
+  <p><b>Mudah:</b> A A C B C ...</p>
+  <p><b>Sedang:</b> A C B A C ...</p>
+  <p><b>Sulit:</b> B C A B C ...</p>
 </div>
 
 <!-- ABOUT -->
-<div id="about" class="card hidden">
-  <h2>Tentang</h2>
-  <p>Game edukasi Akuntansi SMA untuk latihan menghadapi ulangan dan ujian.</p>
+<div id="about" class="page">
+  <h2>Tentang Website</h2>
+  <p>Website ini dibuat sebagai media pembelajaran akuntansi SMA.</p>
   <p><b>Owner:</b> arell</p>
-</div>
 </div>
 
 <footer>© Game Akuntansi SMA</footer>
 
 <script>
-const pages=['home','level','game','result','answer','essay','about'];
-function showPage(id){pages.forEach(p=>document.getElementById(p).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+function openPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
 let questions={
- easy:Array.from({length:25},(_,i)=>({q:`Soal Mudah ${i+1}: Akun kas termasuk?`,o:['Harta','Utang','Modal'],a:0})),
- medium:Array.from({length:25},(_,i)=>({q:`Soal Sedang ${i+1}: Persamaan dasar akuntansi?`,o:['Harta=Modal-Utang','Utang=Harta+Modal','Harta=Utang+Modal'],a:2})),
- hard:Array.from({length:25},(_,i)=>({q:`Soal Sulit ${i+1}: Laporan posisi keuangan?`,o:['Laba rugi','Neraca','Arus kas'],a:1}))
+  easy:Array.from({length:25},(_,i)=>({q:`Soal Mudah ${i+1}: Akun kas termasuk?`,o:['Harta','Utang','Modal'],a:0})),
+  medium:Array.from({length:25},(_,i)=>({q:`Soal Sedang ${i+1}: Persamaan dasar akuntansi?`,o:['H=M-U','U=H+M','H=U+M'],a:2})),
+  hard:Array.from({length:25},(_,i)=>({q:`Soal Sulit ${i+1}: Laporan posisi keuangan?`,o:['Laba rugi','Neraca','Arus kas'],a:1}))
 };
 
-let level='',index=0,score=0;
-
-function startLevel(l){level=l;index=0;score=0;showPage('game');document.getElementById('levelTitle').innerText='Level '+l.toUpperCase();showQuestion();}
-
-function showQuestion(){const q=questions[level][index];let html=`<p><b>${index+1}. ${q.q}</b></p>`;q.o.forEach((op,i)=>{html+=`<label><input type='radio' name='opt' value='${i}'> ${op}</label>`});document.getElementById('quiz').innerHTML=html;}
-
-function nextQuestion(){const sel=document.querySelector('input[name=opt]:checked');if(!sel)return alert('Pilih jawaban');if(parseInt(sel.value)===questions[level][index].a)score+=4;index++;if(index<25)showQuestion();else{showPage('result');document.getElementById('scoreText').innerText='Skor kamu: '+score;}}
-function submitEssay(){
-  alert('Jawaban esai berhasil dikumpulkan! (simulasi)');
+let currentLevel='',index=0,score=0;
+function startLevel(l){currentLevel=l;index=0;score=0;showPG();}
+function showPG(){
+  const q=questions[currentLevel][index];
+  let html=`<p><b>${index+1}. ${q.q}</b></p>`;
+  q.o.forEach((op,i)=>html+=`<label><input type='radio' name='pg' value='${i}'> ${op}</label>`);
+  html+=`<button onclick='nextPG()'>Berikutnya</button>`;
+  document.getElementById('pgGame').innerHTML=html;
+}
+function nextPG(){
+  const s=document.querySelector('input[name=pg]:checked');
+  if(!s)return alert('Pilih jawaban');
+  if(parseInt(s.value)===questions[currentLevel][index].a)score+=4;
+  index++;
+  if(index<25)showPG();
+  else document.getElementById('pgGame').innerHTML=`<h3>Skor: ${score}</h3>`;
 }
 </script>
 </body>
