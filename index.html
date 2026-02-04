@@ -3,81 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Belajar Bahasa Inggris</title>
+<title>English Learning Pro</title>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f4f6f8;
+:root{
+--main:#2563eb;
+--dark:#1e40af;
+--bg:#f1f5f9;
+--card:#ffffff;
 }
 
-header {
-    background: #2d89ef;
-    color: white;
-    padding: 15px;
-    text-align: center;
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+font-family:Segoe UI, sans-serif;
+background:var(--bg);
+color:#1f2933;
 }
 
-nav {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    background: #1b5fbf;
-    padding: 10px;
+/* HEADER */
+header{
+background:linear-gradient(135deg,var(--main),var(--dark));
+color:white;
+padding:50px 20px;
+text-align:center;
 }
 
-nav button {
-    background: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
+header h1{font-size:2.6rem}
+header p{margin-top:10px}
+
+/* NAV */
+nav{
+position:sticky;
+top:0;
+background:white;
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+padding:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+z-index:10;
 }
 
-nav button:hover {
-    background: #e0e0e0;
+nav button{
+background:var(--main);
+border:none;
+color:white;
+padding:10px 18px;
+border-radius:25px;
+cursor:pointer;
+font-weight:bold;
 }
 
-section {
-    display: none;
-    padding: 20px;
+nav button:hover{background:var(--dark)}
+
+/* SECTION */
+section{
+display:none;
+padding:30px;
+max-width:1100px;
+margin:auto;
 }
 
-section.active {
-    display: block;
+section.active{display:block}
+
+/* CARD */
+.card{
+background:var(--card);
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+margin-bottom:20px;
+transition:.3s;
 }
 
-.card {
-    background: white;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
+.card:hover{transform:translateY(-4px)}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
 }
 
-button.sound {
-    background: #2d89ef;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
+.word{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-weight:500;
 }
 
-button.sound:hover {
-    background: #1b5fbf;
+.sound{
+background:var(--main);
+border:none;
+color:white;
+border-radius:50%;
+padding:6px 10px;
+cursor:pointer;
 }
 
-.quiz-option {
-    display: block;
-    margin: 5px 0;
+.sound:hover{background:var(--dark)}
+
+.quiz-option{margin:6px 0}
+
+button.action{
+margin-top:10px;
+background:var(--main);
+border:none;
+color:white;
+padding:10px 18px;
+border-radius:10px;
+cursor:pointer;
 }
 
-footer {
-    text-align: center;
-    padding: 10px;
-    background: #ddd;
+button.action:hover{background:var(--dark)}
+
+footer{
+background:#e5e7eb;
+padding:15px;
+text-align:center;
+margin-top:30px;
 }
 </style>
 </head>
@@ -85,105 +130,144 @@ footer {
 <body>
 
 <header>
-    <h1>📘 Belajar Bahasa Inggris</h1>
-    <p>Belajar mudah + suara</p>
+<h1>🇬🇧 English Learning Pro</h1>
+<p>Belajar Bahasa Inggris Lengkap • Interaktif • Dengan Suara</p>
 </header>
 
 <nav>
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('vocab')">Vocabulary</button>
-    <button onclick="showPage('quiz')">Quiz</button>
-    <button onclick="showPage('about')">About</button>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('vocab')">Vocabulary</button>
+<button onclick="showPage('sentence')">Sentences</button>
+<button onclick="showPage('quiz')">Quiz</button>
+<button onclick="showPage('game')">Mini Game</button>
+<button onclick="showPage('about')">About</button>
 </nav>
 
 <!-- HOME -->
 <section id="home" class="active">
-    <div class="card">
-        <h2>Selamat Datang 👋</h2>
-        <p>Website ini membantu kamu belajar Bahasa Inggris dengan suara.</p>
-        <p>Klik menu Vocabulary untuk belajar kosakata 🔊</p>
-    </div>
+<div class="card">
+<h2>✨ Selamat Datang</h2>
+<p>Website belajar Bahasa Inggris super lengkap untuk pemula.</p>
+<ul>
+<li>📚 40+ Kosakata</li>
+<li>🔊 Audio Pengucapan</li>
+<li>🧠 Quiz & Mini Game</li>
+</ul>
+</div>
 </section>
 
-<!-- VOCABULARY -->
+<!-- VOCAB -->
 <section id="vocab">
-    <h2>📗 Vocabulary</h2>
+<h2>📚 Vocabulary</h2>
 
-    <div class="card">
-        <b>Apple</b> = Apel  
-        <button class="sound" onclick="speak('Apple')">🔊</button>
-    </div>
+<div class="card"><h3>🐶 Animals</h3><div class="grid">
+<div class="word">Cat = Kucing <button class="sound" onclick="speak('Cat')">🔊</button></div>
+<div class="word">Dog = Anjing <button class="sound" onclick="speak('Dog')">🔊</button></div>
+<div class="word">Bird = Burung <button class="sound" onclick="speak('Bird')">🔊</button></div>
+<div class="word">Cow = Sapi <button class="sound" onclick="speak('Cow')">🔊</button></div>
+<div class="word">Horse = Kuda <button class="sound" onclick="speak('Horse')">🔊</button></div>
+</div></div>
 
-    <div class="card">
-        <b>Cat</b> = Kucing  
-        <button class="sound" onclick="speak('Cat')">🔊</button>
-    </div>
+<div class="card"><h3>📦 Objects</h3><div class="grid">
+<div class="word">Book = Buku <button class="sound" onclick="speak('Book')">🔊</button></div>
+<div class="word">Chair = Kursi <button class="sound" onclick="speak('Chair')">🔊</button></div>
+<div class="word">Table = Meja <button class="sound" onclick="speak('Table')">🔊</button></div>
+<div class="word">Bag = Tas <button class="sound" onclick="speak('Bag')">🔊</button></div>
+<div class="word">Pen = Pulpen <button class="sound" onclick="speak('Pen')">🔊</button></div>
+</div></div>
 
-    <div class="card">
-        <b>Book</b> = Buku  
-        <button class="sound" onclick="speak('Book')">🔊</button>
-    </div>
+<div class="card"><h3>🌞 Daily Activities</h3><div class="grid">
+<div class="word">Eat = Makan <button class="sound" onclick="speak('Eat')">🔊</button></div>
+<div class="word">Drink = Minum <button class="sound" onclick="speak('Drink')">🔊</button></div>
+<div class="word">Study = Belajar <button class="sound" onclick="speak('Study')">🔊</button></div>
+<div class="word">Sleep = Tidur <button class="sound" onclick="speak('Sleep')">🔊</button></div>
+<div class="word">Play = Bermain <button class="sound" onclick="speak('Play')">🔊</button></div>
+</div></div>
+</section>
 
-    <div class="card">
-        <b>School</b> = Sekolah  
-        <button class="sound" onclick="speak('School')">🔊</button>
-    </div>
+<!-- SENTENCE -->
+<section id="sentence">
+<h2>🗣️ Sentences</h2>
+
+<div class="card">
+<p><b>I go to school every day.</b><br>Saya pergi ke sekolah setiap hari.
+<button class="sound" onclick="speak('I go to school every day')">🔊</button></p>
+</div>
+
+<div class="card">
+<p><b>I like to eat apples.</b><br>Saya suka makan apel.
+<button class="sound" onclick="speak('I like to eat apples')">🔊</button></p>
+</div>
+
+<div class="card">
+<p><b>The cat is sleeping.</b><br>Kucing sedang tidur.
+<button class="sound" onclick="speak('The cat is sleeping')">🔊</button></p>
+</div>
 </section>
 
 <!-- QUIZ -->
 <section id="quiz">
-    <h2>🧠 Quiz</h2>
+<div class="card">
+<h2>🧠 Quiz</h2>
+<p>Apa arti dari <b>Book</b>?</p>
+<label class="quiz-option"><input type="radio" name="q1" value="0"> Tas</label>
+<label class="quiz-option"><input type="radio" name="q1" value="1"> Buku</label>
+<label class="quiz-option"><input type="radio" name="q1" value="0"> Meja</label>
+<button class="action" onclick="checkQuiz()">Cek</button>
+<p id="quizResult"></p>
+</div>
+</section>
 
-    <div class="card">
-        <p>1. Apa arti dari "Cat"?</p>
-        <label class="quiz-option"><input type="radio" name="q1" value="0"> Anjing</label>
-        <label class="quiz-option"><input type="radio" name="q1" value="1"> Kucing</label>
-        <label class="quiz-option"><input type="radio" name="q1" value="0"> Burung</label>
-    </div>
-
-    <button onclick="checkQuiz()">Cek Jawaban</button>
-    <p id="result"></p>
+<!-- GAME -->
+<section id="game">
+<div class="card">
+<h2>🎮 Mini Game</h2>
+<p>Tebak arti dari kata: <b>Dog</b></p>
+<button class="action" onclick="answerGame(true)">Anjing</button>
+<button class="action" onclick="answerGame(false)">Kucing</button>
+<p id="gameScore">Skor: 0</p>
+</div>
 </section>
 
 <!-- ABOUT -->
 <section id="about">
-    <div class="card">
-        <h2>ℹ️ Tentang Website</h2>
-        <p>Website belajar Bahasa Inggris sederhana.</p>
-        <p>Dibuat menggunakan HTML, CSS, dan JavaScript.</p>
-    </div>
+<div class="card">
+<h2>ℹ️ About</h2>
+<p>Website belajar Bahasa Inggris interaktif.</p>
+<p>Dibuat dengan HTML, CSS, dan JavaScript.</p>
+<p>Cocok untuk pemula & pelajar.</p>
+</div>
 </section>
 
 <footer>
-    © 2026 Belajar Bahasa Inggris
+© 2026 English Learning Pro
 </footer>
 
 <script>
-function showPage(id) {
-    document.querySelectorAll("section").forEach(sec => {
-        sec.classList.remove("active");
-    });
-    document.getElementById(id).classList.add("active");
+let score=0;
+
+function showPage(id){
+document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
 }
 
-function speak(text) {
-    let utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    speechSynthesis.speak(utterance);
+function speak(text){
+let u=new SpeechSynthesisUtterance(text);
+u.lang="en-US";
+speechSynthesis.speak(u);
 }
 
-function checkQuiz() {
-    let answer = document.querySelector('input[name="q1"]:checked');
-    if (!answer) {
-        alert("Pilih jawaban dulu!");
-        return;
-    }
+function checkQuiz(){
+let a=document.querySelector('input[name="q1"]:checked');
+if(!a){alert("Pilih jawaban!");return;}
+document.getElementById("quizResult").innerText=
+a.value=="1"?"✅ Benar!":"❌ Salah!";
+}
 
-    if (answer.value == "1") {
-        document.getElementById("result").innerText = "✅ Jawaban Benar!";
-    } else {
-        document.getElementById("result").innerText = "❌ Jawaban Salah!";
-    }
+function answerGame(correct){
+if(correct){score+=10;alert("Benar!");}
+else{alert("Salah!");}
+document.getElementById("gameScore").innerText="Skor: "+score;
 }
 </script>
 
