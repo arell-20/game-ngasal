@@ -1,128 +1,191 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Akuntansi SMA</title>
-  <style>
-    body{margin:0;font-family:Arial;background:#f2f6ff}
-    header{background:#2b4eff;color:#fff;padding:15px;text-align:center}
-    nav{background:#1d36b8;display:flex;justify-content:center;gap:10px;padding:10px}
-    nav button{background:#fff;color:#1d36b8;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;font-weight:bold}
-    nav button:hover{background:#dfe5ff}
-    .page{display:none;max-width:900px;margin:20px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,.1)}
-    .page.active{display:block}
-    footer{text-align:center;color:#666;margin:20px}
-    label{display:block;margin:6px 0}
-    textarea{width:100%}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belajar Bahasa Inggris</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f6f8;
+}
+
+header {
+    background: #2d89ef;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    background: #1b5fbf;
+    padding: 10px;
+}
+
+nav button {
+    background: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+nav button:hover {
+    background: #e0e0e0;
+}
+
+section {
+    display: none;
+    padding: 20px;
+}
+
+section.active {
+    display: block;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+button.sound {
+    background: #2d89ef;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.sound:hover {
+    background: #1b5fbf;
+}
+
+.quiz-option {
+    display: block;
+    margin: 5px 0;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background: #ddd;
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <h1>🎓 Game Akuntansi SMA</h1>
-  <p>Website Edukasi Akuntansi Interaktif</p>
+    <h1>📘 Belajar Bahasa Inggris</h1>
+    <p>Belajar mudah + suara</p>
 </header>
 
 <nav>
-  <button onclick="openPage('home')">Beranda</button>
-  <button onclick="openPage('materi')">Materi</button>
-  <button onclick="openPage('level')">Soal PG</button>
-  <button onclick="openPage('essay')">Soal Esai</button>
-  <button onclick="openPage('answer')">Kunci Jawaban</button>
-  <button onclick="openPage('about')">Tentang</button>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('vocab')">Vocabulary</button>
+    <button onclick="showPage('quiz')">Quiz</button>
+    <button onclick="showPage('about')">About</button>
 </nav>
 
-<!-- BERANDA -->
-<div id="home" class="page active">
-  <h2>Beranda</h2>
-  <p>Selamat datang di website permainan akuntansi SMA. Website ini dirancang untuk membantu siswa belajar melalui soal pilihan ganda dan esai.</p>
-</div>
+<!-- HOME -->
+<section id="home" class="active">
+    <div class="card">
+        <h2>Selamat Datang 👋</h2>
+        <p>Website ini membantu kamu belajar Bahasa Inggris dengan suara.</p>
+        <p>Klik menu Vocabulary untuk belajar kosakata 🔊</p>
+    </div>
+</section>
 
-<!-- MATERI -->
-<div id="materi" class="page">
-  <h2>Materi Akuntansi Dasar</h2>
-  <ul>
-    <li>Pengertian Akuntansi</li>
-    <li>Persamaan Dasar Akuntansi</li>
-    <li>Jenis-jenis Akun</li>
-    <li>Laporan Keuangan</li>
-  </ul>
-</div>
+<!-- VOCABULARY -->
+<section id="vocab">
+    <h2>📗 Vocabulary</h2>
 
-<!-- LEVEL / PG -->
-<div id="level" class="page">
-  <h2>Pilih Level Soal Pilihan Ganda</h2>
-  <button onclick="startLevel('easy')">Mudah</button>
-  <button onclick="startLevel('medium')">Sedang</button>
-  <button onclick="startLevel('hard')">Sulit</button>
-  <div id="pgGame"></div>
-</div>
+    <div class="card">
+        <b>Apple</b> = Apel  
+        <button class="sound" onclick="speak('Apple')">🔊</button>
+    </div>
 
-<!-- ESSAY -->
-<div id="essay" class="page">
-  <h2>Soal Esai</h2>
-  <ol>
-    <li>Jelaskan pengertian akuntansi!<br><textarea rows="3"></textarea></li>
-    <li>Jelaskan persamaan dasar akuntansi!<br><textarea rows="3"></textarea></li>
-    <li>Mengapa pencatatan transaksi penting?<br><textarea rows="3"></textarea></li>
-    <li>Jelaskan perbedaan harta dan utang!<br><textarea rows="3"></textarea></li>
-    <li>Sebutkan contoh akun harta!<br><textarea rows="3"></textarea></li>
-    <li>Apa itu jurnal umum?<br><textarea rows="3"></textarea></li>
-    <li>Fungsi laporan laba rugi?<br><textarea rows="3"></textarea></li>
-    <li>Tujuan laporan keuangan?<br><textarea rows="3"></textarea></li>
-    <li>Perbedaan neraca dan laba rugi?<br><textarea rows="3"></textarea></li>
-    <li>Mengapa ketelitian penting?<br><textarea rows="3"></textarea></li>
-  </ol>
-  <button onclick="alert('Jawaban esai dikumpulkan (simulasi)')">Kumpulkan</button>
-</div>
+    <div class="card">
+        <b>Cat</b> = Kucing  
+        <button class="sound" onclick="speak('Cat')">🔊</button>
+    </div>
 
-<!-- KUNCI -->
-<div id="answer" class="page">
-  <h2>Kunci Jawaban Pilihan Ganda</h2>
-  <p><b>Mudah:</b> A A C B C ...</p>
-  <p><b>Sedang:</b> A C B A C ...</p>
-  <p><b>Sulit:</b> B C A B C ...</p>
-</div>
+    <div class="card">
+        <b>Book</b> = Buku  
+        <button class="sound" onclick="speak('Book')">🔊</button>
+    </div>
+
+    <div class="card">
+        <b>School</b> = Sekolah  
+        <button class="sound" onclick="speak('School')">🔊</button>
+    </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+    <h2>🧠 Quiz</h2>
+
+    <div class="card">
+        <p>1. Apa arti dari "Cat"?</p>
+        <label class="quiz-option"><input type="radio" name="q1" value="0"> Anjing</label>
+        <label class="quiz-option"><input type="radio" name="q1" value="1"> Kucing</label>
+        <label class="quiz-option"><input type="radio" name="q1" value="0"> Burung</label>
+    </div>
+
+    <button onclick="checkQuiz()">Cek Jawaban</button>
+    <p id="result"></p>
+</section>
 
 <!-- ABOUT -->
-<div id="about" class="page">
-  <h2>Tentang Website</h2>
-  <p>Website ini dibuat sebagai media pembelajaran akuntansi SMA.</p>
-  <p><b>Owner:</b> arell</p>
-</div>
+<section id="about">
+    <div class="card">
+        <h2>ℹ️ Tentang Website</h2>
+        <p>Website belajar Bahasa Inggris sederhana.</p>
+        <p>Dibuat menggunakan HTML, CSS, dan JavaScript.</p>
+    </div>
+</section>
 
-<footer>© Game Akuntansi SMA</footer>
+<footer>
+    © 2026 Belajar Bahasa Inggris
+</footer>
 
 <script>
-function openPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+function showPage(id) {
+    document.querySelectorAll("section").forEach(sec => {
+        sec.classList.remove("active");
+    });
+    document.getElementById(id).classList.add("active");
 }
 
-let questions={
-  easy:Array.from({length:25},(_,i)=>({q:`Soal Mudah ${i+1}: Akun kas termasuk?`,o:['Harta','Utang','Modal'],a:0})),
-  medium:Array.from({length:25},(_,i)=>({q:`Soal Sedang ${i+1}: Persamaan dasar akuntansi?`,o:['H=M-U','U=H+M','H=U+M'],a:2})),
-  hard:Array.from({length:25},(_,i)=>({q:`Soal Sulit ${i+1}: Laporan posisi keuangan?`,o:['Laba rugi','Neraca','Arus kas'],a:1}))
-};
-
-let currentLevel='',index=0,score=0;
-function startLevel(l){currentLevel=l;index=0;score=0;showPG();}
-function showPG(){
-  const q=questions[currentLevel][index];
-  let html=`<p><b>${index+1}. ${q.q}</b></p>`;
-  q.o.forEach((op,i)=>html+=`<label><input type='radio' name='pg' value='${i}'> ${op}</label>`);
-  html+=`<button onclick='nextPG()'>Berikutnya</button>`;
-  document.getElementById('pgGame').innerHTML=html;
+function speak(text) {
+    let utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    speechSynthesis.speak(utterance);
 }
-function nextPG(){
-  const s=document.querySelector('input[name=pg]:checked');
-  if(!s)return alert('Pilih jawaban');
-  if(parseInt(s.value)===questions[currentLevel][index].a)score+=4;
-  index++;
-  if(index<25)showPG();
-  else document.getElementById('pgGame').innerHTML=`<h3>Skor: ${score}</h3>`;
+
+function checkQuiz() {
+    let answer = document.querySelector('input[name="q1"]:checked');
+    if (!answer) {
+        alert("Pilih jawaban dulu!");
+        return;
+    }
+
+    if (answer.value == "1") {
+        document.getElementById("result").innerText = "✅ Jawaban Benar!";
+    } else {
+        document.getElementById("result").innerText = "❌ Jawaban Salah!";
+    }
 }
 </script>
+
 </body>
 </html>
