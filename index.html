@@ -3,66 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>English Learning Pro</title>
+<title>EnglishPro – Learn English Online</title>
 
 <style>
 :root{
---main:#2563eb;
---dark:#1e40af;
---bg:#f1f5f9;
+--primary:#2563eb;
+--secondary:#1e40af;
+--bg:#f8fafc;
 --card:#ffffff;
+--text:#1f2937;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
-font-family:Segoe UI, sans-serif;
+font-family:'Segoe UI',sans-serif;
 background:var(--bg);
-color:#1f2933;
+color:var(--text);
 }
-
-/* HEADER */
-header{
-background:linear-gradient(135deg,var(--main),var(--dark));
-color:white;
-padding:50px 20px;
-text-align:center;
-}
-
-header h1{font-size:2.6rem}
-header p{margin-top:10px}
 
 /* NAV */
 nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:white;
+box-shadow:0 4px 12px rgba(0,0,0,.08);
 position:sticky;
 top:0;
-background:white;
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-padding:12px;
-box-shadow:0 4px 10px rgba(0,0,0,.1);
 z-index:10;
 }
 
+nav h2{color:var(--primary)}
+
 nav button{
-background:var(--main);
-border:none;
+background:var(--primary);
 color:white;
+border:none;
 padding:10px 18px;
-border-radius:25px;
+border-radius:20px;
 cursor:pointer;
-font-weight:bold;
+font-weight:600;
 }
 
-nav button:hover{background:var(--dark)}
+nav button:hover{background:var(--secondary)}
+
+/* HERO */
+.hero{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+padding:70px 40px;
+align-items:center;
+}
+
+.hero h1{font-size:3rem}
+.hero p{margin:15px 0;font-size:1.1rem}
+
+.hero .cta{
+margin-top:20px;
+}
+
+.hero img{
+width:100%;
+border-radius:20px;
+}
 
 /* SECTION */
 section{
 display:none;
-padding:30px;
-max-width:1100px;
+padding:50px 40px;
+max-width:1200px;
 margin:auto;
 }
 
@@ -71,180 +83,128 @@ section.active{display:block}
 /* CARD */
 .card{
 background:var(--card);
-padding:20px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-margin-bottom:20px;
-transition:.3s;
+padding:25px;
+border-radius:20px;
+box-shadow:0 12px 30px rgba(0,0,0,.08);
+margin-bottom:25px;
 }
-
-.card:hover{transform:translateY(-4px)}
 
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
+gap:20px;
 }
 
 .word{
 display:flex;
 justify-content:space-between;
 align-items:center;
-font-weight:500;
 }
 
 .sound{
-background:var(--main);
-border:none;
+background:var(--primary);
 color:white;
+border:none;
 border-radius:50%;
 padding:6px 10px;
 cursor:pointer;
 }
 
-.sound:hover{background:var(--dark)}
+.sound:hover{background:var(--secondary)}
 
-.quiz-option{margin:6px 0}
-
-button.action{
-margin-top:10px;
-background:var(--main);
+.level-btn{
+padding:12px;
+border-radius:15px;
 border:none;
-color:white;
-padding:10px 18px;
-border-radius:10px;
+font-weight:600;
 cursor:pointer;
+background:var(--primary);
+color:white;
 }
 
-button.action:hover{background:var(--dark)}
+.level-btn:hover{background:var(--secondary)}
+
+.quiz-option{margin:8px 0}
 
 footer{
-background:#e5e7eb;
-padding:15px;
 text-align:center;
-margin-top:30px;
+padding:20px;
+background:#e5e7eb;
+margin-top:40px;
+}
+
+@media(max-width:900px){
+.hero{grid-template-columns:1fr}
+.hero h1{font-size:2.2rem}
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>🇬🇧 English Learning Pro</h1>
-<p>Belajar Bahasa Inggris Lengkap • Interaktif • Dengan Suara</p>
-</header>
-
 <nav>
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('vocab')">Vocabulary</button>
-<button onclick="showPage('sentence')">Sentences</button>
-<button onclick="showPage('quiz')">Quiz</button>
-<button onclick="showPage('game')">Mini Game</button>
-<button onclick="showPage('about')">About</button>
+<h2>EnglishPro</h2>
+<button onclick="showPage('learn')">Mulai Belajar</button>
 </nav>
 
-<!-- HOME -->
+<!-- LANDING -->
 <section id="home" class="active">
-<div class="card">
-<h2>✨ Selamat Datang</h2>
-<p>Website belajar Bahasa Inggris super lengkap untuk pemula.</p>
-<ul>
-<li>📚 40+ Kosakata</li>
-<li>🔊 Audio Pengucapan</li>
-<li>🧠 Quiz & Mini Game</li>
-</ul>
+<div class="hero">
+<div>
+<h1>Belajar Bahasa Inggris Online</h1>
+<p>Platform belajar Bahasa Inggris interaktif dengan audio, latihan, dan level bertahap.</p>
+<button class="level-btn" onclick="showPage('learn')">Mulai Sekarang</button>
+</div>
+<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f" alt="">
+</div>
+
+<div class="grid">
+<div class="card"><h3>📚 Materi Lengkap</h3><p>Vocabulary, sentence & listening.</p></div>
+<div class="card"><h3>🔊 Audio Native</h3><p>Dengar pengucapan yang benar.</p></div>
+<div class="card"><h3>🧠 Quiz & Progress</h3><p>Latihan dan pantau perkembangan.</p></div>
 </div>
 </section>
 
-<!-- VOCAB -->
-<section id="vocab">
-<h2>📚 Vocabulary</h2>
+<!-- LEARN -->
+<section id="learn">
+<h2>📘 Pilih Level</h2>
 
-<div class="card"><h3>🐶 Animals</h3><div class="grid">
-<div class="word">Cat = Kucing <button class="sound" onclick="speak('Cat')">🔊</button></div>
-<div class="word">Dog = Anjing <button class="sound" onclick="speak('Dog')">🔊</button></div>
-<div class="word">Bird = Burung <button class="sound" onclick="speak('Bird')">🔊</button></div>
-<div class="word">Cow = Sapi <button class="sound" onclick="speak('Cow')">🔊</button></div>
-<div class="word">Horse = Kuda <button class="sound" onclick="speak('Horse')">🔊</button></div>
-</div></div>
-
-<div class="card"><h3>📦 Objects</h3><div class="grid">
-<div class="word">Book = Buku <button class="sound" onclick="speak('Book')">🔊</button></div>
-<div class="word">Chair = Kursi <button class="sound" onclick="speak('Chair')">🔊</button></div>
-<div class="word">Table = Meja <button class="sound" onclick="speak('Table')">🔊</button></div>
-<div class="word">Bag = Tas <button class="sound" onclick="speak('Bag')">🔊</button></div>
-<div class="word">Pen = Pulpen <button class="sound" onclick="speak('Pen')">🔊</button></div>
-</div></div>
-
-<div class="card"><h3>🌞 Daily Activities</h3><div class="grid">
-<div class="word">Eat = Makan <button class="sound" onclick="speak('Eat')">🔊</button></div>
-<div class="word">Drink = Minum <button class="sound" onclick="speak('Drink')">🔊</button></div>
-<div class="word">Study = Belajar <button class="sound" onclick="speak('Study')">🔊</button></div>
-<div class="word">Sleep = Tidur <button class="sound" onclick="speak('Sleep')">🔊</button></div>
-<div class="word">Play = Bermain <button class="sound" onclick="speak('Play')">🔊</button></div>
-</div></div>
-</section>
-
-<!-- SENTENCE -->
-<section id="sentence">
-<h2>🗣️ Sentences</h2>
-
+<div class="grid">
 <div class="card">
-<p><b>I go to school every day.</b><br>Saya pergi ke sekolah setiap hari.
-<button class="sound" onclick="speak('I go to school every day')">🔊</button></p>
+<h3>Beginner</h3>
+<button class="level-btn" onclick="loadLevel('beginner')">Masuk</button>
 </div>
 
 <div class="card">
-<p><b>I like to eat apples.</b><br>Saya suka makan apel.
-<button class="sound" onclick="speak('I like to eat apples')">🔊</button></p>
+<h3>Intermediate</h3>
+<button class="level-btn" onclick="loadLevel('intermediate')">Masuk</button>
 </div>
 
 <div class="card">
-<p><b>The cat is sleeping.</b><br>Kucing sedang tidur.
-<button class="sound" onclick="speak('The cat is sleeping')">🔊</button></p>
+<h3>Advanced</h3>
+<button class="level-btn" onclick="loadLevel('advanced')">Masuk</button>
 </div>
-</section>
+</div>
 
-<!-- QUIZ -->
-<section id="quiz">
-<div class="card">
-<h2>🧠 Quiz</h2>
-<p>Apa arti dari <b>Book</b>?</p>
-<label class="quiz-option"><input type="radio" name="q1" value="0"> Tas</label>
-<label class="quiz-option"><input type="radio" name="q1" value="1"> Buku</label>
-<label class="quiz-option"><input type="radio" name="q1" value="0"> Meja</label>
-<button class="action" onclick="checkQuiz()">Cek</button>
-<p id="quizResult"></p>
-</div>
-</section>
-
-<!-- GAME -->
-<section id="game">
-<div class="card">
-<h2>🎮 Mini Game</h2>
-<p>Tebak arti dari kata: <b>Dog</b></p>
-<button class="action" onclick="answerGame(true)">Anjing</button>
-<button class="action" onclick="answerGame(false)">Kucing</button>
-<p id="gameScore">Skor: 0</p>
-</div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-<div class="card">
-<h2>ℹ️ About</h2>
-<p>Website belajar Bahasa Inggris interaktif.</p>
-<p>Dibuat dengan HTML, CSS, dan JavaScript.</p>
-<p>Cocok untuk pemula & pelajar.</p>
-</div>
+<div id="content"></div>
 </section>
 
 <footer>
-© 2026 English Learning Pro
+© 2026 EnglishPro – Online English Learning
 </footer>
 
 <script>
-let score=0;
+const data={
+beginner:[
+["Apple","Apel"],["Cat","Kucing"],["Book","Buku"],["Eat","Makan"],["Drink","Minum"]
+],
+intermediate:[
+["School","Sekolah"],["Teacher","Guru"],["Homework","PR"],["Travel","Bepergian"],["Library","Perpustakaan"]
+],
+advanced:[
+["Opportunity","Kesempatan"],["Experience","Pengalaman"],["Knowledge","Pengetahuan"],["Responsibility","Tanggung jawab"],["Development","Perkembangan"]
+]
+};
 
 function showPage(id){
 document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
@@ -257,17 +217,13 @@ u.lang="en-US";
 speechSynthesis.speak(u);
 }
 
-function checkQuiz(){
-let a=document.querySelector('input[name="q1"]:checked');
-if(!a){alert("Pilih jawaban!");return;}
-document.getElementById("quizResult").innerText=
-a.value=="1"?"✅ Benar!":"❌ Salah!";
-}
-
-function answerGame(correct){
-if(correct){score+=10;alert("Benar!");}
-else{alert("Salah!");}
-document.getElementById("gameScore").innerText="Skor: "+score;
+function loadLevel(level){
+let html=`<div class="card"><h3>Vocabulary</h3><div class="grid">`;
+data[level].forEach(w=>{
+html+=`<div class="word">${w[0]} = ${w[1]} <button class="sound" onclick="speak('${w[0]}')">🔊</button></div>`;
+});
+html+=`</div></div>`;
+document.getElementById("content").innerHTML=html;
 }
 </script>
 
