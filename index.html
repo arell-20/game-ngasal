@@ -2,228 +2,179 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EnglishPro – Learn English Online</title>
-
+<title>Mini Spotify</title>
 <style>
-:root{
---primary:#2563eb;
---secondary:#1e40af;
---bg:#f8fafc;
---card:#ffffff;
---text:#1f2937;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: white;
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-font-family:'Segoe UI',sans-serif;
-background:var(--bg);
-color:var(--text);
+.container {
+  display: flex;
+  height: 100vh;
 }
 
-/* NAV */
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 40px;
-background:white;
-box-shadow:0 4px 12px rgba(0,0,0,.08);
-position:sticky;
-top:0;
-z-index:10;
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #000;
+  padding: 20px;
+}
+.sidebar h2 {
+  color: #1DB954;
+}
+.sidebar a {
+  display: block;
+  color: #ccc;
+  margin: 15px 0;
+  text-decoration: none;
+}
+.sidebar a:hover {
+  color: white;
 }
 
-nav h2{color:var(--primary)}
-
-nav button{
-background:var(--primary);
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:20px;
-cursor:pointer;
-font-weight:600;
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+.song {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+}
+.song img {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+.song:hover {
+  background: #1a1a1a;
 }
 
-nav button:hover{background:var(--secondary)}
-
-/* HERO */
-.hero{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:30px;
-padding:70px 40px;
-align-items:center;
+/* PLAYER */
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 220px;
+  right: 0;
+  background: #181818;
+  padding: 10px 20px;
 }
-
-.hero h1{font-size:3rem}
-.hero p{margin:15px 0;font-size:1.1rem}
-
-.hero .cta{
-margin-top:20px;
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-
-.hero img{
-width:100%;
-border-radius:20px;
+button {
+  background: #1DB954;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
 }
-
-/* SECTION */
-section{
-display:none;
-padding:50px 40px;
-max-width:1200px;
-margin:auto;
+input[type=range] {
+  flex: 1;
 }
-
-section.active{display:block}
-
-/* CARD */
-.card{
-background:var(--card);
-padding:25px;
-border-radius:20px;
-box-shadow:0 12px 30px rgba(0,0,0,.08);
-margin-bottom:25px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-}
-
-.word{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.sound{
-background:var(--primary);
-color:white;
-border:none;
-border-radius:50%;
-padding:6px 10px;
-cursor:pointer;
-}
-
-.sound:hover{background:var(--secondary)}
-
-.level-btn{
-padding:12px;
-border-radius:15px;
-border:none;
-font-weight:600;
-cursor:pointer;
-background:var(--primary);
-color:white;
-}
-
-.level-btn:hover{background:var(--secondary)}
-
-.quiz-option{margin:8px 0}
-
-footer{
-text-align:center;
-padding:20px;
-background:#e5e7eb;
-margin-top:40px;
-}
-
-@media(max-width:900px){
-.hero{grid-template-columns:1fr}
-.hero h1{font-size:2.2rem}
+.volume {
+  width: 100px;
 }
 </style>
 </head>
-
 <body>
 
-<nav>
-<h2>EnglishPro</h2>
-<button onclick="showPage('learn')">Mulai Belajar</button>
-</nav>
+<div class="container">
+  <div class="sidebar">
+    <h2>Spotify</h2>
+    <a href="#">🏠 Home</a>
+    <a href="#">🔍 Search</a>
+    <a href="#">📁 Library</a>
+  </div>
 
-<!-- LANDING -->
-<section id="home" class="active">
-<div class="hero">
-<div>
-<h1>Belajar Bahasa Inggris Online</h1>
-<p>Platform belajar Bahasa Inggris interaktif dengan audio, latihan, dan level bertahap.</p>
-<button class="level-btn" onclick="showPage('learn')">Mulai Sekarang</button>
-</div>
-<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f" alt="">
-</div>
+  <div class="main">
+    <h1>Playlist Bebas Hak Cipta</h1>
 
-<div class="grid">
-<div class="card"><h3>📚 Materi Lengkap</h3><p>Vocabulary, sentence & listening.</p></div>
-<div class="card"><h3>🔊 Audio Native</h3><p>Dengar pengucapan yang benar.</p></div>
-<div class="card"><h3>🧠 Quiz & Progress</h3><p>Latihan dan pantau perkembangan.</p></div>
-</div>
-</section>
-
-<!-- LEARN -->
-<section id="learn">
-<h2>📘 Pilih Level</h2>
-
-<div class="grid">
-<div class="card">
-<h3>Beginner</h3>
-<button class="level-btn" onclick="loadLevel('beginner')">Masuk</button>
+    <div class="song" onclick="playSong(0)">
+      <img src="cover1.jpg"> Dreams – Joakim Karud
+    </div>
+    <div class="song" onclick="playSong(1)">
+      <img src="cover2.jpg"> Sunny – KODOMOi
+    </div>
+    <div class="song" onclick="playSong(2)">
+      <img src="cover3.jpg"> Ukulele – Bensound
+    </div>
+    <div class="song" onclick="playSong(3)">
+      <img src="cover4.jpg"> Energy – Bensound
+    </div>
+  </div>
 </div>
 
-<div class="card">
-<h3>Intermediate</h3>
-<button class="level-btn" onclick="loadLevel('intermediate')">Masuk</button>
+<div class="player">
+  <div class="controls">
+    <button onclick="prevSong()">⏮</button>
+    <button onclick="togglePlay()">▶ / ⏸</button>
+    <button onclick="nextSong()">⏭</button>
+    <span id="title">Pilih lagu</span>
+  </div>
+  <input type="range" id="progress" value="0">
+  <input type="range" class="volume" min="0" max="1" step="0.01" value="1" onchange="setVolume(this.value)">
 </div>
 
-<div class="card">
-<h3>Advanced</h3>
-<button class="level-btn" onclick="loadLevel('advanced')">Masuk</button>
-</div>
-</div>
-
-<div id="content"></div>
-</section>
-
-<footer>
-© 2026 EnglishPro – Online English Learning
-</footer>
+<audio id="audio"></audio>
 
 <script>
-const data={
-beginner:[
-["Apple","Apel"],["Cat","Kucing"],["Book","Buku"],["Eat","Makan"],["Drink","Minum"]
-],
-intermediate:[
-["School","Sekolah"],["Teacher","Guru"],["Homework","PR"],["Travel","Bepergian"],["Library","Perpustakaan"]
-],
-advanced:[
-["Opportunity","Kesempatan"],["Experience","Pengalaman"],["Knowledge","Pengetahuan"],["Responsibility","Tanggung jawab"],["Development","Perkembangan"]
-]
-};
+const songs = [
+  { title: "Dreams – Joakim Karud", src: "dreams.mp3" },
+  { title: "Sunny – KODOMOi", src: "sunny.mp3" },
+  { title: "Ukulele – Bensound", src: "ukulele.mp3" },
+  { title: "Energy – Bensound", src: "energy.mp3" }
+];
 
-function showPage(id){
-document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+const audio = document.getElementById("audio");
+const title = document.getElementById("title");
+const progress = document.getElementById("progress");
+
+let currentSong = 0;
+
+function playSong(index) {
+  currentSong = index;
+  audio.src = songs[index].src;
+  title.textContent = songs[index].title;
+  audio.play();
 }
 
-function speak(text){
-let u=new SpeechSynthesisUtterance(text);
-u.lang="en-US";
-speechSynthesis.speak(u);
+function togglePlay() {
+  audio.paused ? audio.play() : audio.pause();
 }
 
-function loadLevel(level){
-let html=`<div class="card"><h3>Vocabulary</h3><div class="grid">`;
-data[level].forEach(w=>{
-html+=`<div class="word">${w[0]} = ${w[1]} <button class="sound" onclick="speak('${w[0]}')">🔊</button></div>`;
+function nextSong() {
+  currentSong = (currentSong + 1) % songs.length;
+  playSong(currentSong);
+}
+
+function prevSong() {
+  currentSong = (currentSong - 1 + songs.length) % songs.length;
+  playSong(currentSong);
+}
+
+audio.addEventListener("timeupdate", () => {
+  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
 });
-html+=`</div></div>`;
-document.getElementById("content").innerHTML=html;
+
+progress.addEventListener("input", () => {
+  audio.currentTime = (progress.value / 100) * audio.duration;
+});
+
+audio.addEventListener("ended", nextSong);
+
+function setVolume(v) {
+  audio.volume = v;
 }
 </script>
 
