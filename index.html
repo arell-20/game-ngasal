@@ -1,181 +1,181 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Mini Spotify</title>
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #121212;
-  color: white;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Tebak Kata Modern</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #8b5cf6;
+            --secondary: #3b82f6;
+            --text: #f8fafc;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
 
-.container {
-  display: flex;
-  height: 100vh;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-/* SIDEBAR */
-.sidebar {
-  width: 220px;
-  background: #000;
-  padding: 20px;
-}
-.sidebar h2 {
-  color: #1DB954;
-}
-.sidebar a {
-  display: block;
-  color: #ccc;
-  margin: 15px 0;
-  text-decoration: none;
-}
-.sidebar a:hover {
-  color: white;
-}
+        .container {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
 
-/* MAIN */
-.main {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-}
-.song {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border-bottom: 1px solid #333;
-  cursor: pointer;
-}
-.song img {
-  width: 50px;
-  height: 50px;
-  border-radius: 5px;
-}
-.song:hover {
-  background: #1a1a1a;
-}
+        h1 {
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-/* PLAYER */
-.player {
-  position: fixed;
-  bottom: 0;
-  left: 220px;
-  right: 0;
-  background: #181818;
-  padding: 10px 20px;
-}
-.controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-button {
-  background: #1DB954;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-input[type=range] {
-  flex: 1;
-}
-.volume {
-  width: 100px;
-}
-</style>
+        .question-box {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            min-height: 60px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #334155;
+            background: #0f172a;
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover { transform: translateY(-2px); }
+
+        .result-img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 4px solid var(--primary);
+            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #feedback { margin-top: 1rem; font-weight: bold; height: 20px; }
+        .stats { margin-top: 2rem; font-size: 0.9rem; color: #94a3b8; }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="sidebar">
-    <h2>Spotify</h2>
-    <a href="#">🏠 Home</a>
-    <a href="#">🔍 Search</a>
-    <a href="#">📁 Library</a>
-  </div>
-
-  <div class="main">
-    <h1>Playlist Bebas Hak Cipta</h1>
-
-    <div class="song" onclick="playSong(0)">
-      <img src="cover1.jpg"> Dreams – Joakim Karud
+<div class="container" id="game-container">
+    <h1>Tebak Kata 🧩</h1>
+    
+    <div id="quiz-content">
+        <div class="question-box" id="question">Memuat soal...</div>
+        <div class="input-group">
+            <input type="text" id="answer-input" placeholder="Ketik jawaban..." autocomplete="off">
+            <button onclick="checkAnswer()">Kirim Jawaban</button>
+        </div>
+        <div id="feedback"></div>
+        <div class="stats">
+            Soal: <span id="current-pos">1</span>/5 | Skor: <span id="score">0</span>
+        </div>
     </div>
-    <div class="song" onclick="playSong(1)">
-      <img src="cover2.jpg"> Sunny – KODOMOi
-    </div>
-    <div class="song" onclick="playSong(2)">
-      <img src="cover3.jpg"> Ukulele – Bensound
-    </div>
-    <div class="song" onclick="playSong(3)">
-      <img src="cover4.jpg"> Energy – Bensound
-    </div>
-  </div>
 </div>
-
-<div class="player">
-  <div class="controls">
-    <button onclick="prevSong()">⏮</button>
-    <button onclick="togglePlay()">▶ / ⏸</button>
-    <button onclick="nextSong()">⏭</button>
-    <span id="title">Pilih lagu</span>
-  </div>
-  <input type="range" id="progress" value="0">
-  <input type="range" class="volume" min="0" max="1" step="0.01" value="1" onchange="setVolume(this.value)">
-</div>
-
-<audio id="audio"></audio>
 
 <script>
-const songs = [
-  { title: "Dreams – Joakim Karud", src: "dreams.mp3" },
-  { title: "Sunny – KODOMOi", src: "sunny.mp3" },
-  { title: "Ukulele – Bensound", src: "ukulele.mp3" },
-  { title: "Energy – Bensound", src: "energy.mp3" }
-];
+    const quizData = [
+        { q: "Aku punya sayap tapi bukan burung, aku punya mesin tapi bukan mobil. Apakah aku?", a: "pesawat" },
+        { q: "Aku selalu ada di depanmu tapi kamu tidak bisa melihatku. Apakah aku?", a: "masa depan" },
+        { q: "Semakin banyak kamu mengambilnya, semakin besar aku jadinya. Apakah aku?", a: "lubang" },
+        { q: "Punya banyak gigi tapi tidak bisa menggigit. Apakah aku?", a: "sisir" },
+        { q: "Kalau sedang tidur dia bangun, kalau sedang bangun dia tidur. Apakah itu?", a: "telapak kaki" }
+    ];
 
-const audio = document.getElementById("audio");
-const title = document.getElementById("title");
-const progress = document.getElementById("progress");
+    let currentIdx = 0;
+    let score = 0;
 
-let currentSong = 0;
+    function loadQuestion() {
+        if (currentIdx < quizData.length) {
+            document.getElementById('question').innerText = quizData[currentIdx].q;
+            document.getElementById('answer-input').value = '';
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('current-pos').innerText = currentIdx + 1;
+        } else {
+            showResult();
+        }
+    }
 
-function playSong(index) {
-  currentSong = index;
-  audio.src = songs[index].src;
-  title.textContent = songs[index].title;
-  audio.play();
-}
+    function checkAnswer() {
+        const input = document.getElementById('answer-input');
+        const feedback = document.getElementById('feedback');
+        const userAnswer = input.value.toLowerCase().trim();
 
-function togglePlay() {
-  audio.paused ? audio.play() : audio.pause();
-}
+        if (userAnswer === quizData[currentIdx].a) {
+            score += 20;
+            feedback.innerText = "Benar! 🎉";
+            feedback.style.color = "var(--success)";
+            setTimeout(() => {
+                currentIdx++;
+                document.getElementById('score').innerText = score;
+                loadQuestion();
+            }, 1000);
+        } else {
+            feedback.innerText = "Salah, coba lagi! ❌";
+            feedback.style.color = "var(--error)";
+        }
+    }
 
-function nextSong() {
-  currentSong = (currentSong + 1) % songs.length;
-  playSong(currentSong);
-}
+    function showResult() {
+        const container = document.getElementById('game-container');
+        let finalMessage = score === 100 ? "Luar Biasa! Nilai Sempurna! 🏆" : "Bagus! Coba lagi nanti!";
+        
+        container.innerHTML = `
+            <h1>${finalMessage}</h1>
+            <img src="download.jpeg" alt="Monyet Lucu" class="result-img">
+            <p style="font-size: 1.2rem">Skor Akhir: <b>${score}</b></p>
+            <button onclick="location.reload()" style="width: 100%">Main Lagi</button>
+        `;
+    }
 
-function prevSong() {
-  currentSong = (currentSong - 1 + songs.length) % songs.length;
-  playSong(currentSong);
-}
-
-audio.addEventListener("timeupdate", () => {
-  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-});
-
-progress.addEventListener("input", () => {
-  audio.currentTime = (progress.value / 100) * audio.duration;
-});
-
-audio.addEventListener("ended", nextSong);
-
-function setVolume(v) {
-  audio.volume = v;
-}
+    loadQuestion();
+    document.getElementById('answer-input').addEventListener("keypress", e => {
+        if (e.key === "Enter") checkAnswer();
+    });
 </script>
 
 </body>
